@@ -34,18 +34,40 @@ export const loginSchema = z.object({
 export type TLoginSchema = z.infer<typeof loginSchema>
 
 export const productSchema = z.object({
-  name: z.string().min(1, {
-    message: "Must be at least 1 character",
-  }),
+  name: z
+    .string()
+    .min(1, {
+      message: "Must be at least 1 character",
+    })
+    .max(200, {
+      message: "Max 200 character",
+    }),
   description: z.string(),
   images: z.string().optional(),
-  price: z.number().int().positive(),
-  condition: z.string(),
-  stock: z.number().int().positive(),
-  weight: z.number().int().positive(),
+  price: z.coerce.number().int().positive().gt(0),
+  condition: z.enum([
+    "Very good condition",
+    "Good condition",
+    "Judge by picture",
+  ]),
+  stock: z.coerce.number().int().positive().gte(0),
+  weight: z.coerce.number().int().positive().gt(0),
   size: z.string(),
-  insurance: z.string(),
-  category: z.string(),
+  warranty: z.string(),
+  category: z.enum([
+    "Monitor",
+    "Keyboard",
+    "Mouse",
+    "Headset",
+    "Webcam",
+    "Processor",
+    "Motherboard",
+    "Graphic Card",
+    "Power Supply",
+    "Memory",
+    "Disk",
+    "Other",
+  ]),
   subcategory: z.string().optional().nullable(),
 })
 

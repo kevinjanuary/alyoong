@@ -12,13 +12,16 @@ import Link from "next/link"
 
 import { OAuthSignIn } from "../_components/oauth-signin"
 import { SignUpForm } from "../_components/signup-form"
+import { createUser } from "@/actions/create-user"
+import { Button } from "@/components/ui/button"
+import { User } from "./user"
 
 const RegisterPage = async () => {
   const users = await db.user.findMany()
 
   return (
     <div className="h-full flex flex-col items-center justify-center">
-      {/* <div>Register</div>
+      <div>Register</div>
       <form action={createUser}>
         <input id="name" name="name" type="name" placeholder="Name" required />
         <input
@@ -36,7 +39,7 @@ const RegisterPage = async () => {
             <User {...user} />
           </div>
         ))}
-      </div> */}
+      </div>
 
       <Card className="max-w-md w-full">
         <CardHeader>

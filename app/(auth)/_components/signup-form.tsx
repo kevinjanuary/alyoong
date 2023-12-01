@@ -23,7 +23,7 @@ import { signIn } from "next-auth/react"
 export const SignUpForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get("redirect")
+  const redirectUrl: string = searchParams.get("redirect") || "/"
   const { toast } = useToast()
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -61,10 +61,17 @@ export const SignUpForm = () => {
       ...values,
       redirect: false,
     }).then((callback) => {
-      if (redirect) {
-        return router.push(redirect)
+      if (callback?.ok) {
+        router.push(redirectUrl)
+        router.refresh()
+      } else {
+        toast({
+          title: "Something went wrong...",
+          description: "Please try again.",
+          duration: 2000,
+          variant: "destructive",
+        })
       }
-      router.push("/")
     })
   }
 

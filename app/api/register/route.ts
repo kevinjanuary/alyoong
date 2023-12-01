@@ -4,16 +4,17 @@ import { NextResponse } from "next/server"
 import { registerSchema } from "@/lib/types"
 
 export async function POST(request: Request) {
-  const body = await request.json()
-  const { name, email, password } = registerSchema.parse({
-    name: body.name,
-    email: body.email,
-    password: body.password,
-  })
-
-  const hashedPassword = await bcrypt.hash(password, 12)
+  const data = await request.json()
 
   try {
+    const { name, email, password } = registerSchema.parse({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    })
+
+    const hashedPassword = await bcrypt.hash(password, 12)
+
     await db.user.create({
       data: {
         name,

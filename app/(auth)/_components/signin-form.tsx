@@ -17,10 +17,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { signIn } from "next-auth/react"
 import { useToast } from "@/components/ui/use-toast"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { loginSchema } from "@/lib/types"
 
 export const SignInForm = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectUrl: string = searchParams.get("redirect") || "/"
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,8 +32,6 @@ export const SignInForm = () => {
       password: "",
     },
   })
-  const { toast } = useToast()
-  const router = useRouter()
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     signIn("credentials", {
@@ -42,7 +44,8 @@ export const SignInForm = () => {
           description: "You are now logged in!",
           duration: 2000,
         })
-        router.push("/")
+        router.push(redirectUrl)
+        router.refresh()
       }
 
       if (callback?.error) {
