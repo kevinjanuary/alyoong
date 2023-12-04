@@ -8,6 +8,11 @@ body,
   height: 100%;
 }
 
+img {
+  width: auto;
+  height: auto;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

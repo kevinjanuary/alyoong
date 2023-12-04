@@ -44,8 +44,8 @@ const UserMenu = ({ user }: { user: User | null }) => {
                 <AvatarFallback>GT</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="min-w-[150px]">
+              <DropdownMenuLabel className="pr-4">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
                     {user.name}
