@@ -143,3 +143,62 @@ export const productSchema = z.object({
 })
 
 export type TProductSchema = z.infer<typeof productSchema>
+
+export const addressSchema = z.object({
+  label: z
+    .string()
+    .min(1, {
+      message: "Label must be filled",
+    })
+    .max(30, {
+      message: "Label must be at most 30 characters long",
+    }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be filled",
+    })
+    .max(50, {
+      message: "Name must be at most 50 characters long",
+    }),
+  phone: z
+    .string()
+    .min(9, {
+      message: "Phone number must be at least 9 characters long",
+    })
+    .max(20, {
+      message: "Phone number must be at most 20 characters long",
+    }),
+  city_district: z
+    .string()
+    .min(3, {
+      message: "City/District must be at least 3 character long",
+    })
+    .max(100),
+  postal_code: z.string().length(5, {
+    message: "Postal code must be 5 characters long",
+  }),
+  address: z
+    .string()
+    .min(5, {
+      message: "Address must be filled",
+    })
+    .max(200, {
+      message: "Address must be at most 200 characters long",
+    }),
+  notes: z
+    .string()
+    .max(50, {
+      message: "Notes must be at most 50 characters long",
+    })
+    .optional()
+    .nullable(),
+})
+
+export type TAddressSchema = z.infer<typeof addressSchema>
+
+export type TAddressFullSchema = TAddressSchema & {
+  province: string
+  city: string
+  district: string
+}

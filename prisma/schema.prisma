@@ -22,6 +22,7 @@ model User {
 
   accounts Account[]
   products Product[]
+  addresses Address[]
 }
 
 model Account {
@@ -43,21 +44,44 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model Address {
+  id            String  @id @default(uuid()) @map("_id") @db.VarChar(36)
+  userId        String  @db.VarChar(36)
+
+  label         String  @db.VarChar(30)
+  name          String  @db.VarChar(50)
+  phone         String  @db.VarChar(20)
+  city_district String  @db.VarChar(100)
+  district      String  @db.VarChar(50)
+  city          String  @db.VarChar(50)
+  province      String  @db.VarChar(50)
+  postal_code   String  @db.VarChar(5)
+  address       String  @db.VarChar(200)
+  notes         String? @db.VarChar(50)
+
+  primary       Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Product {
-  id String @id @default(uuid()) @map("_id") @db.VarChar(36)
-  name String @db.VarChar(255)
-  description String @db.Text
-  images String
-  price Decimal @db.Decimal(10, 2)
-  condition String
-  stock Int
-  weight Int
-  size String
-  warranty String
-  userId String
-  createdAt DateTime @default(now())
-  category String
-  subcategory String?
+  id              String    @id @default(cuid()) @map("_id") @db.VarChar(36)
+  name            String    @db.VarChar(200)
+  description     String    @db.VarChar(2000)
+  images          String
+  price           Decimal   @db.Decimal(9, 0)
+  condition       String    @db.VarChar(20)
+  stock           Int       @db.UnsignedMediumInt
+  weight          Int       @db.UnsignedMediumInt
+  length          Int       @db.UnsignedSmallInt
+  width           Int       @db.UnsignedSmallInt
+  height          Int       @db.UnsignedSmallInt
+  warranty        String    @db.VarChar(10)
+  warranty_detail Int       @db.UnsignedSmallInt
+  userId          String    @db.VarChar(36)
+  createdAt       DateTime  @default(now())
+  category        String    @db.VarChar(25)
+  subcategory     String?   @db.VarChar(50)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
