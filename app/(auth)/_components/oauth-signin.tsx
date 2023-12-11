@@ -20,7 +20,13 @@ export const OAuthSignIn = () => {
   }
   return (
     <Button onClick={googleSignIn} variant="outline" className="w-full gap-2">
-      <Image src="/google.svg" width={20} height={20} alt="Google" />
+      <Image
+        src="/google.svg"
+        width={20}
+        height={20}
+        alt="Google"
+        className="w-5 h-5"
+      />
       Continue with Google
     </Button>
   )

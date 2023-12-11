@@ -12,35 +12,12 @@ import Link from "next/link"
 
 import { OAuthSignIn } from "../_components/oauth-signin"
 import { SignUpForm } from "../_components/signup-form"
-import { createUser } from "@/actions/create-user"
-import { Button } from "@/components/ui/button"
-import { User } from "./user"
 
 const RegisterPage = async () => {
   const users = await db.user.findMany()
 
   return (
     <div className="h-full flex flex-col items-center justify-center">
-      <div>Register</div>
-      <form action={createUser}>
-        <input id="name" name="name" type="name" placeholder="Name" required />
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-        />
-        <Button type="submit">Register account</Button>
-      </form>
-      <div>
-        {users.map((user) => (
-          <div key={user.id}>
-            <User {...user} />
-          </div>
-        ))}
-      </div>
-
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle>Register</CardTitle>
@@ -63,8 +40,8 @@ const RegisterPage = async () => {
           <SignUpForm />
         </CardContent>
         <CardFooter>
-          <div className="text-sm text-muted-foreground">
-            Already have an account?{" "}
+          <div className="flex gap-1 text-sm text-muted-foreground">
+            Already have an account?
             <Link
               aria-label="Sign in"
               href="/login"

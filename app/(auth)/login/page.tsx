@@ -1,5 +1,3 @@
-import { db } from "@/lib/prismadb"
-
 import {
   Card,
   CardContent,
@@ -14,8 +12,6 @@ import { OAuthSignIn } from "../_components/oauth-signin"
 import { SignInForm } from "../_components/signin-form"
 
 const LoginPage = async () => {
-  const users = await db.user.findMany()
-
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <Card className="max-w-md w-full">
