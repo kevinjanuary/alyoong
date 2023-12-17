@@ -11,7 +11,7 @@ const RootPage = () => {
           Jual barang lama dan temukan barang baru impianmu!
         </h1>
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
-          Temukan kualitas baru dalam barang bekas di Groove Tech!
+          Temukan kualitas baru dalam barang bekas di Alyoong!
         </span>
         <div className="flex gap-4 mt-6">
           <Button type="button" size="lg" asChild>
@@ -28,7 +28,7 @@ const RootPage = () => {
           Categories
         </h2>
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
-          Find the best second-hand electronic equipment at Groove Tech
+          Find the best second-hand electronic equipment at Alyoong
         </span>
         <Categories />
       </div>
@@ -38,7 +38,7 @@ const RootPage = () => {
           Featured products
         </h2>
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
-          Browse second-hand products from Groove Tech!
+          Browse second-hand products from Alyoong!
         </span>
         <Products />
       </div>
