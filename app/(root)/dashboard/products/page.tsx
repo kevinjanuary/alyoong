@@ -1,21 +1,11 @@
 import { Button } from "@/components/ui/button"
-import { PageHeading } from "../_components/page-heading"
 import Link from "next/link"
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { db } from "@/lib/prismadb"
 import { redirect } from "next/navigation"
-import { currencyFormat } from "@/lib/currencyFormat"
-import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
 import { getCurrentUser } from "@/lib/session"
+import { ProductsTable } from "./add/_components/products-table"
+import { NoData } from "../_components/no-data"
+import { AddressModal } from "../address/_components/address-modal"
 
 const ProductsPage = async () => {
   const currentUser = await getCurrentUser()
@@ -24,72 +14,37 @@ const ProductsPage = async () => {
     redirect("/login")
   }
 
-  const products = await db.product.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+  const address = await db.address.findFirst({
     where: {
       userId: currentUser.id,
+      primary: true,
     },
   })
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
-        <Button size="sm" asChild>
-          <Link href="/dashboard/products/add">Add product</Link>
-        </Button>
-      </div>
-
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="">Product</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead className="w-44">Condition</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell className="">
-                  <div className="grid grid-cols-[64px,auto] gap-4 items-center">
-                    <div className="mb-auto">
-                      <Image
-                        src={
-                          product.images ||
-                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                        }
-                        alt={product.name}
-                        width={64}
-                        height={64}
-                        className="w-16 h-16 overflow-hidden rounded-md aspect-square object-contain border"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium">
-                        <Link href={`/products/${product.id}`}>
-                          {product.name}
-                        </Link>
-                      </span>
-                      <span className="text-xs text-muted-foreground line-clamp-2">
-                        {product.description}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>Rp{currencyFormat(Number(product.price))}</TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{product.condition}</Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      {address ? (
+        <>
+          <div className="mb-4 flex justify-end">
+            <Button size="sm" asChild>
+              <Link href="/dashboard/products/add">Add product</Link>
+            </Button>
+          </div>
+          <ProductsTable currentUser={currentUser} />
+        </>
+      ) : (
+        <NoData
+          title="Yahh! Kamu harus punya alamat utama!"
+          description="Kamu harus punya alamat utama untuk bisa jualan di Alyoong. Yukk
+        tambahin satu alamat utama dulu!"
+        >
+          <AddressModal
+            button="Tambah alamat"
+            title="Tambah alamat utama"
+            description="Tambahkan alamat utama kamu untuk bisa jualan di Alyoong!"
+          />
+        </NoData>
+      )}
     </div>
   )
 }

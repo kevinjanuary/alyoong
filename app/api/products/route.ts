@@ -36,7 +36,6 @@ export async function POST(request: NextRequest) {
       data: {
         ...product,
         price: cleanFormat(product.price),
-        condition: product.condition,
         stock: cleanFormat(product.stock, 0, 100000),
         weight: cleanFormat(product.weight, 0, 500000),
         length: cleanFormat(product.length, 0, 1000),
