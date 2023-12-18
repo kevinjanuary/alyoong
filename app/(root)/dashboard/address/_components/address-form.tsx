@@ -16,28 +16,36 @@ import {
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
-import {
-  CityDistrictResultType,
-  city,
-  firstFetch,
-  resultType,
-  secondFetch,
-} from "@/lib/dummyAddress"
+import { CityDistrictResultType, resultType } from "@/lib/types"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/submit-button"
+
+const city = [
+  "Jakarta",
+  "Bogor",
+  "Depok",
+  "Tangerang",
+  "Bekasi",
+  "Bandung",
+  "Semarang",
+  "Surabaya",
+  "Yogyakarta",
+  "Malang",
+] as const
 
 export function AddressForm({
   setOpen,
   defaultValue,
+  onChange,
 }: {
   setOpen: () => void
   defaultValue?: TAddressSchema
+  onChange?: () => void
 }) {
-  const [submit, setSubmit] = useState(false)
-
   const [cityDistrictFocus, setCityDistrictFocus] = useState(false)
 
   const [cityDistrictQuery, setCityDistrictQuery] = useState(
@@ -72,12 +80,12 @@ export function AddressForm({
       notes: defaultValue?.notes || "",
     },
   })
+  const isSubmitting = form.formState.isSubmitting
 
   async function onSubmit(values: z.infer<typeof addressSchema>) {
-    setSubmit(true)
     try {
       const result = cityDistrictResult?.find(
-        (item) => item.name === cityDistrictSelected
+        (item) => item.id === cityDistrictSelected
       )
       if (!result) throw "City District not found"
       if (postalCode.length < 5) throw "Postal Code not found"
@@ -110,6 +118,8 @@ export function AddressForm({
         description: "Successfully added address.",
         duration: 2000,
       })
+      setOpen()
+      onChange && onChange()
 
       router.refresh()
     } catch (error) {
@@ -121,42 +131,48 @@ export function AddressForm({
           : "There was a problem with your request. Please try again.",
         duration: 2000,
       })
-    } finally {
-      setSubmit(false)
-      setOpen()
     }
   }
 
-  const selectCityDistrict = async (name: string) => {
-    setCityDistrictSelected(name)
+  const selectCityDistrict = async (name: string, id: string) => {
+    setCityDistrictSelected(id)
     setCityDistrictQuery(name)
-    const res: resultType = await new Promise((resolve) => {
-      resolve(secondFetch)
+    const res = await fetch("/api/biteship/postalcode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ areaId: id }),
     })
-    const data = res.result.areas
-    setPostalCodeResult(data)
+    const data: resultType = await res.json()
+    setPostalCodeResult(data.areas)
+    console.log({ postalCodeResult })
   }
 
   useEffect(() => {
     if (cityDistrictQuery.length < 3 || cityDistrictSelected) return
     const timeoutId = setTimeout(async () => {
       console.log("User query: ", cityDistrictQuery)
-      const res: resultType = await new Promise((resolve) => {
-        resolve(firstFetch)
+      const res = await fetch("/api/biteship", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: cityDistrictQuery }),
       })
-      const data = res.result.areas
-      setCityDistrictResult(data)
-      setCityDistrictResultSucess(res.result.success)
-      console.log({ onType: cityDistrictResult })
+      const data: resultType = await res.json()
+      setCityDistrictResult(data.areas)
+      setCityDistrictResultSucess(data.success)
+      console.log({ cityDistrictResult })
     }, 1000)
 
     return () => clearTimeout(timeoutId)
-  }, [cityDistrictQuery, cityDistrictResult, cityDistrictSelected])
+  }, [cityDistrictQuery])
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset disabled={submit} className="group space-y-8">
+        <fieldset disabled={isSubmitting} className="group space-y-8">
           <FormField
             control={form.control}
             name="label"
@@ -276,7 +292,7 @@ export function AddressForm({
                             key={index}
                             onClick={() => {
                               field.onChange(item.name)
-                              selectCityDistrict(item.name)
+                              selectCityDistrict(item.name, item.id)
                             }}
                             className="whitespace-nowrap rounded-md text-sm font-medium transition-colors border hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 cursor-pointer"
                           >
@@ -381,14 +397,7 @@ export function AddressForm({
             )}
           />
           <div className="flex gap-2">
-            {submit ? (
-              <Button disabled>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </Button>
-            ) : (
-              <Button onClick={form.handleSubmit(onSubmit)}>Add address</Button>
-            )}
+            <SubmitButton submit={isSubmitting} text="Add address" />
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancel

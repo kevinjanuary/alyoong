@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -18,39 +18,47 @@ export function AddressModal({
   button,
   title,
   description,
-  max = 0,
+  length = 0,
+  noCounter = false,
   defaultValue,
+  onChange,
 }: {
   button: string
   title: string
   description: string
-  max?: number
+  noCounter?: boolean
+  length?: number
   defaultValue?: TAddressFullSchema
+  onChange?: () => void
 }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm" disabled={max >= 3 || false}>
-          {button}
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
+    <div className="flex items-center justify-end gap-2">
+      {!noCounter && <span>{length}/3</span>}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button size="sm" disabled={length >= 3 || false}>
+            {button}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="h-full">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
 
-        <ScrollArea className="grow">
-          <div className="px-6 py-4">
-            <AddressForm
-              setOpen={() => setOpen(false)}
-              defaultValue={defaultValue}
-            />
-          </div>
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
+          <ScrollArea className="grow">
+            <div className="px-6 py-4">
+              <AddressForm
+                setOpen={() => setOpen(false)}
+                defaultValue={defaultValue}
+                onChange={onChange}
+              />
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    </div>
   )
 }
