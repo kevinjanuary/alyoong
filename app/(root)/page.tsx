@@ -25,20 +25,20 @@ const RootPage = () => {
 
       <div className="flex flex-col items-center mt-24">
         <h2 className="text-2xl md:text-4xl font-medium text-center mb-6 max-w-xs md:max-w-4xl">
-          Categories
+          Kategori
         </h2>
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
-          Find the best second-hand electronic equipment at Alyoong
+          Temukan barang berdasarkan kategori yang kamu inginkan!
         </span>
         <Categories />
       </div>
 
       <div className="flex flex-col items-center mt-24">
         <h2 className="text-2xl md:text-4xl font-medium text-center mb-6 max-w-xs md:max-w-4xl">
-          Featured products
+          Produk Terbaru
         </h2>
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
-          Browse second-hand products from Alyoong!
+          Cari barang impianmu di Alyoong!
         </span>
         <Products />
       </div>

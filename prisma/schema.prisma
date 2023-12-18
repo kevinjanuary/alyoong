@@ -8,36 +8,36 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-  // relationMode = "prisma"
 }
 
 model User {
-  id String @id @default(uuid()) @map("_id") @db.VarChar(36)
-  name String
-  email String @unique
-  emailVerified DateTime?
-  image String?
-  hashedPassword String?
-  createdAt DateTime @default(now())
+  id              String    @id @default(uuid()) @db.VarChar(36)
+  name            String
+  email           String    @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
 
   accounts Account[]
   products Product[]
   addresses Address[]
+  transactions Transaction[]
 }
 
 model Account {
-  id String @id @default(uuid()) @map("_id") @db.VarChar(36)
-  userId String
-  type String
-  provider String
-  providerAccountId String
-  refresh_token String? @db.Text
-  access_token String? @db.Text
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String? @db.Text
-  sesion_state String?
+  id                  String    @id @default(uuid()) @db.VarChar(36)
+  userId              String
+  type                String
+  provider            String
+  providerAccountId   String
+  refresh_token       String?   @db.Text
+  access_token        String?   @db.Text
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?   @db.Text
+  sesion_state        String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -45,7 +45,7 @@ model Account {
 }
 
 model Address {
-  id            String  @id @default(uuid()) @map("_id") @db.VarChar(36)
+  id            String  @id @default(uuid()) @db.VarChar(36)
   userId        String  @db.VarChar(36)
 
   label         String  @db.VarChar(30)
@@ -67,10 +67,10 @@ model Address {
 }
 
 model Product {
-  id              String    @id @default(cuid()) @map("_id") @db.VarChar(36)
+  id              String    @id @default(cuid()) @db.VarChar(36)
   name            String    @db.VarChar(200)
   description     String    @db.VarChar(2000)
-  images          String
+  images          String    @db.VarChar(255)
   price           Decimal   @db.Decimal(9, 0)
   condition       String    @db.VarChar(20)
   stock           Int       @db.UnsignedMediumInt
@@ -80,10 +80,54 @@ model Product {
   height          Int       @db.UnsignedSmallInt
   warranty        String    @db.VarChar(10)
   warranty_detail Int       @db.UnsignedSmallInt
-  userId          String    @db.VarChar(36)
-  createdAt       DateTime  @default(now())
   category        String    @db.VarChar(25)
   subcategory     String?   @db.VarChar(50)
 
+  userId          String    @db.VarChar(36)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  transactions Transaction[]
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id              String    @id @default(uuid()) @db.VarChar(36)
+  userId          String    @db.VarChar(36)
+  productId       String    @db.VarChar(36)
+  address         String    @db.VarChar(350)
+
+  price           Decimal   @db.Decimal(9, 0)
+  quantity        Int       @db.UnsignedMediumInt
+  shipping_cost   Decimal   @db.Decimal(9, 0)
+  services_fee    Decimal   @db.Decimal(9, 0)
+  total           Decimal   @db.Decimal(12, 0)
+
+  payment_status  payment_status
+  shipping_status shipping_status @default(PENDING_SHIPPING)
+  no_resi         String?   @db.VarChar(25)
+
+  snap_token      String?   @db.VarChar(255)
+  snap_url        String?   @db.VarChar(255)
+  snap_expires    DateTime?
+  payment_method  String?   @db.VarChar(20)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+enum payment_status {
+  PENDING_PAYMENT
+  PAID
+  CANCELED
+}
+
+enum shipping_status {
+  PENDING_SHIPPING
+  SHIPPING
+  DELIVERED
+  CANCELED
 }

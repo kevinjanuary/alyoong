@@ -22,6 +22,8 @@ import {
   Package,
   CircleDollarSign,
   LogOut,
+  MapPin,
+  ShoppingBag,
 } from "lucide-react"
 
 import { usePathname } from "next/navigation"
@@ -41,7 +43,7 @@ const UserMenu = ({ user }: { user: User | null }) => {
             <DropdownMenuTrigger className="select-none" asChild>
               <Avatar className="cursor-pointer">
                 <AvatarImage src={user?.image || undefined} />
-                <AvatarFallback>GT</AvatarFallback>
+                <AvatarFallback>AY</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-[150px]">
@@ -59,26 +61,39 @@ const UserMenu = ({ user }: { user: User | null }) => {
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/account">
                   <UserIcon className="h-4 w-4 mr-2" />
-                  Account
+                  Akun saya
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/address">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Alamat
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings">
                   <Settings className="h-4 w-4 mr-2" />
-                  Settings
+                  Pengaturan
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/transactions">
+                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  Transaksi
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/products">
                   <Package className="h-4 w-4 mr-2" />
-                  Products
+                  Produk
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/orders">
                   <CircleDollarSign className="h-4 w-4 mr-2" />
-                  Orders
+                  Pesanan
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -90,7 +105,7 @@ const UserMenu = ({ user }: { user: User | null }) => {
                 }}
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                Keluar
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -5,11 +5,13 @@ const Logo = () => {
   return (
     <Link href="/">
       <div className="flex gap-2 items-center">
-        <Image src="/logo.svg" alt="Groovetech" width={50} height={50} />
-        <span className="font-medium text-[#4845D2]">
-          Groove
-          <span className="text-[#A5B4FC]">tech</span>
-        </span>
+        <Image
+          src="/logo.png"
+          alt="Alyoong"
+          width={160}
+          height={35}
+          className="h-[35px]"
+        />
       </div>
     </Link>
   )
