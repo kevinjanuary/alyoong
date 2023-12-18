@@ -9,29 +9,43 @@ import {
   Settings,
   User as UserIcon,
   CircleDollarSign,
+  MapPin,
+  ShoppingBag,
 } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
-const NavbarBuyer = [
+const NavbarUser = [
   {
-    name: "Account",
+    name: "Akun saya",
     href: "/dashboard/account",
     icon: UserIcon,
   },
   {
-    name: "Settings",
+    name: "Alamat",
+    href: "/dashboard/address",
+    icon: MapPin,
+  },
+  {
+    name: "Pengaturan",
     href: "/dashboard/settings",
     icon: Settings,
   },
 ]
+const NavbarBuyer = [
+  {
+    name: "Transaksi",
+    href: "/dashboard/transactions",
+    icon: ShoppingBag,
+  },
+]
 const NavbarSeller = [
   {
-    name: "Products",
+    name: "Produk",
     href: "/dashboard/products",
     icon: Package,
   },
   {
-    name: "Orders",
+    name: "Pesanan",
     href: "/dashboard/orders",
     icon: CircleDollarSign,
   },
@@ -42,6 +56,22 @@ export function DashboardNav() {
 
   return (
     <div className="flex w-full flex-col gap-2">
+      {NavbarUser.map((item) => (
+        <Link href={item.href} key={item.name}>
+          <span
+            className={cn(
+              "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+              item.href.includes(String(segment))
+                ? "bg-muted text-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            <item.icon size={20} className="mr-2" />
+            {item.name}
+          </span>
+        </Link>
+      ))}
+      <Separator />
       {NavbarBuyer.map((item) => (
         <Link href={item.href} key={item.name}>
           <span
