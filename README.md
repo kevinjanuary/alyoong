@@ -44,7 +44,7 @@ Backend:
       <td align="center"><a href="https://github.com/kevinjanuary"><img src="https://avatars.githubusercontent.com/u/128971428?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kevin Januari</b></sub></a></td>
       <td align="center"><a href="https://github.com/rais2215"><img src="https://avatars.githubusercontent.com/u/129215713?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Muhammad Noval Rais</b></sub></a></td>
       <td align="center"><a href="https://github.com/kvnnabil234"><img src="https://avatars.githubusercontent.com/u/129818966?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kevin Nabil Mahardhika</b></sub></a></td>
-      <td align="center"><a href="https://github.com/DavidSsntt"><img src="https://avatars.githubusercontent.com/u/129818966?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Susanto</b></sub></a></td>
+      <td align="center"><a href="https://github.com/DavidSsntt"><img src="https://avatars.githubusercontent.com/u/134194729?v=4s=100" width="100px;" alt=""/><br /><sub><b>David Susanto</b></sub></a></td>
     </tr>
   </tbody>
 </table>
