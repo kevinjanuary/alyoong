@@ -22,6 +22,7 @@ Frontend:
 - [React Js](https://react.dev/) - used to build interactive and responsive user interfaces (UI).
 - [Tailwind CSS](https://tailwindcss.com/) - provides freedom and good performance on HTML elements.
 - [Lucide React](https://lucide.dev/) - Lucide is an open-source icon library that provides 1000+ vector (svg) files for displaying icons and symbols in digital and non-digital projects.
+- [Shadcn UI](https://ui.shadcn.com/) - open source customizable component library that makes using components easy while providing a professional look.
 
 Backend:
 - [Next JS](https://nextjs.org/) - a framework for creating server-rendered JavaScript applications based on React.js, Node.js, Webpack, and Babel.js
@@ -43,6 +44,7 @@ Backend:
       <td align="center"><a href="https://github.com/kevinjanuary"><img src="https://avatars.githubusercontent.com/u/128971428?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kevin Januari</b></sub></a></td>
       <td align="center"><a href="https://github.com/rais2215"><img src="https://avatars.githubusercontent.com/u/129215713?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Muhammad Noval Rais</b></sub></a></td>
       <td align="center"><a href="https://github.com/kvnnabil234"><img src="https://avatars.githubusercontent.com/u/129818966?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kevin Nabil Mahardhika</b></sub></a></td>
+      <td align="center"><a href="https://github.com/DavidSsntt"><img src="https://avatars.githubusercontent.com/u/129818966?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Susanto</b></sub></a></td>
     </tr>
   </tbody>
 </table>
