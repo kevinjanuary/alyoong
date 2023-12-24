@@ -9,6 +9,7 @@ import { Pay } from "./_components/pay"
 import { payment_status, shipping_status } from "@prisma/client"
 import { PageHeading } from "../_components/page-heading"
 import { NoData } from "../_components/no-data"
+import { FinishTransaction } from "./_components/finish-transaction"
 
 const TransactionsPage = async () => {
   const user = await getCurrentUser()
@@ -103,6 +104,9 @@ const TransactionsPage = async () => {
                   <Button variant="outline">Lihat detail</Button>
                   {item.payment_status === payment_status.PENDING_PAYMENT && (
                     <Button>Bayar</Button>
+                  )}
+                  {item.shipping_status === shipping_status.SHIPPING && (
+                    <FinishTransaction id={item.id} />
                   )}
                 </div>
               </div>
