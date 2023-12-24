@@ -7,6 +7,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { currencyFormat } from "@/lib/currencyFormat"
 import Image from "next/image"
+import { BuyProduct } from "./_components/buy-product"
 import { notFound } from "next/navigation"
 import { db } from "@/lib/prismadb"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -28,11 +29,6 @@ const ProductsPage = async ({ params: { id } }: { params: { id: string } }) => {
             where: {
               primary: true,
             },
-            // select: {
-            //   city: true,
-            //   province: true,
-            //   city_id: true,
-            // }
           },
         },
       },
@@ -71,7 +67,16 @@ const ProductsPage = async ({ params: { id } }: { params: { id: string } }) => {
         {currentUser ? (
           currentUser?.id != product.user.id ? (
             product.stock > 0 ? (
-              <Button>Buy</Button>
+              <BuyProduct
+                id={product.id}
+                title={product.name}
+                images={product.images}
+                price={Number(product.price)}
+                stock={product.stock}
+                weight={product.weight}
+                dimension={`${product.length} x ${product.width} x ${product.height}cm`}
+                origin={origin}
+              />
             ) : (
               <span className="flex items-center justify-center rounded-md p-2 bg-red-600 text-white">
                 Stok habis!
