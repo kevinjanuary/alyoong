@@ -3,18 +3,62 @@ import { db } from "@/lib/prismadb"
 import Image from "next/image"
 import Link from "next/link"
 
-const Products = async () => {
-  const products = await db.product.findMany({
-    where: {
-      stock: {
-        gt: 0,
-      },
-    },
-    take: 5,
-  })
+const Products = async ({ limit }: { limit?: number }) => {
+  const products = limit
+    ? await db.product.findMany({
+        where: {
+          stock: {
+            gt: 0,
+          },
+        },
+        include: {
+          user: {
+            select: {
+              addresses: {
+                where: {
+                  primary: true,
+                },
+                take: 1,
+                select: {
+                  city: true,
+                },
+              },
+            },
+          },
+        },
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
+    : await db.product.findMany({
+        where: {
+          stock: {
+            gt: 0,
+          },
+        },
+        include: {
+          user: {
+            select: {
+              addresses: {
+                where: {
+                  primary: true,
+                },
+                take: 1,
+                select: {
+                  city: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
 
   return (
-    <div className="max-w-5xl grid grid-cols-5 gap-3 mt-4">
+    <div className="grid grid-cols-5 gap-3 mt-4">
       {products.map((product) => (
         <div
           key={product.id}
@@ -36,7 +80,9 @@ const Products = async () => {
               <span className="font-semibold">
                 Rp{currencyFormat(Number(product.price))}
               </span>
-              <span className="text-xs text-neutral-500">Jakarta Pusat</span>
+              <span className="text-xs text-neutral-500">
+                {product.user.addresses[0].city}
+              </span>
             </div>
           </Link>
         </div>

@@ -2,8 +2,11 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Categories from "./_components/categories"
 import Products from "./_components/products"
+import { getSession } from "@/lib/session"
 
-const RootPage = () => {
+const RootPage = async () => {
+  const session = await getSession()
+
   return (
     <div className="flex flex-col mt-32">
       <div className="flex flex-col items-center">
@@ -18,7 +21,9 @@ const RootPage = () => {
             <Link href="/products">Shop Now</Link>
           </Button>
           <Button variant="outline" size="lg" asChild>
-            <Link href="/register">Sell Now</Link>
+            <Link href={session?.user ? "/dashboard/products" : "/register"}>
+              Sell Now
+            </Link>
           </Button>
         </div>
       </div>
@@ -40,7 +45,12 @@ const RootPage = () => {
         <span className="text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-4xl text-center">
           Cari barang impianmu di Alyoong!
         </span>
-        <Products />
+        <div className="max-w-5xl">
+          <Products limit={10} />
+        </div>
+        <Button type="button" className="mt-8" asChild>
+          <Link href="/products">Lihat lebih banyak</Link>
+        </Button>
       </div>
     </div>
   )
