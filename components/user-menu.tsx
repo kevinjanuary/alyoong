@@ -42,8 +42,10 @@ const UserMenu = ({ user }: { user: User | null }) => {
           <DropdownMenu>
             <DropdownMenuTrigger className="select-none" asChild>
               <Avatar className="cursor-pointer">
-                <AvatarImage src={user?.image || undefined} />
-                <AvatarFallback>AY</AvatarFallback>
+                <AvatarImage src={user.image || undefined} />
+                <AvatarFallback>
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-[150px]">

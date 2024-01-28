@@ -5,13 +5,15 @@ export function SubmitButton({
   submit,
   text,
   className,
+  disabled,
 }: {
   submit: boolean
   text?: string
   className?: string
+  disabled?: boolean
 }) {
   return (
-    <Button type="submit" className={className} disabled={submit}>
+    <Button type="submit" className={className} disabled={disabled || submit}>
       {submit ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
