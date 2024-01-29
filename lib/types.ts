@@ -49,10 +49,10 @@ export const productSchema = z.object({
   price: z
     .string()
     .min(3, {
-      message: "Minimum product price is Rp 100",
+      message: "Harga minimal Rp 100",
     })
     .max(11, {
-      message: "Maximum product price is Rp 999.999.999",
+      message: "Harga maksimal Rp 999.999.999",
     }),
   condition: z.enum([
     "Very good condition",
@@ -62,67 +62,67 @@ export const productSchema = z.object({
   stock: z
     .string()
     .regex(/[^0]/g, {
-      message: "Minimum product stock is 0",
+      message: "Stok minimal 0",
     })
     .min(1, {
-      message: "Minimum product stock is 0",
+      message: "Stok minimal 0",
     })
     .max(7, {
-      message: "Maximum product stock is 100.000",
+      message: "Stok maksimal 999.999",
     }),
   weight: z
     .string()
     .regex(/[^0]/g, {
-      message: "Minimum product stock is 0",
+      message: "Berat minimal 1 gram",
     })
     .min(1, {
-      message: "Minimum product weight is 1 grams",
+      message: "Berat minimal 1 gram",
     })
     .max(8, {
-      message: "Maximum product weight is 500.000 grams",
+      message: "Berat maksimal 999.999 gram",
     }),
   length: z
     .string()
     .regex(/[^0]/g, {
-      message: "Minimum product stock is 0",
+      message: "Panjang minimal 1 cm",
     })
     .min(1, {
-      message: "Min. 1 cm",
+      message: "Panjang minimal 1 cm",
     })
     .max(5, {
-      message: "Max. 1000 cm",
+      message: "Panjang maksimal 1000 cm",
     }),
   width: z
     .string()
     .regex(/[^0]/g, {
-      message: "Minimum product stock is 0",
+      message: "Lebar minimal 1 cm",
     })
     .min(1, {
-      message: "Min. 1 cm",
+      message: "Lebar minimal 1 cm",
     })
     .max(5, {
-      message: "Max. 1000 cm",
+      message: "Lebar maksimal 1000 cm",
     }),
   height: z
     .string()
     .regex(/[^0]/g, {
-      message: "Minimum product stock is 0",
+      message: "Tinggi minimal 1 cm",
     })
     .min(1, {
-      message: "Min. 1 cm",
+      message: "Tinggi minimal 1 cm",
     })
     .max(5, {
-      message: "Max. 1000 cm",
+      message: "Tinggi maksimal 1000 cm",
     }),
   warranty: z.enum(["Active", "No"]),
   warranty_detail: z.coerce
     .number()
     .int()
     .gt(0, {
-      message: "Must at least 1 month",
+      message: "Minimal 1 bulan",
     })
     .lte(999, {
-      message: "Max. 50 characters",
+      message: "Maksimal 999 bulan",
     })
     .default(0),
   category: z.enum([
@@ -148,54 +148,67 @@ export const addressSchema = z.object({
   label: z
     .string()
     .min(1, {
-      message: "Label must be filled",
+      message: "Label harus diisi",
     })
     .max(30, {
-      message: "Label must be at most 30 characters long",
+      message: "Label maksimal 30 karakter",
     }),
   name: z
     .string()
     .min(2, {
-      message: "Name must be filled",
+      message: "Nama harus diisi",
     })
     .max(50, {
-      message: "Name must be at most 50 characters long",
+      message: "Nama maksimal 50 karakter",
     }),
   phone: z
     .string()
     .min(9, {
-      message: "Phone number must be at least 9 characters long",
+      message: "Nomor telepon harus diisi",
     })
     .max(20, {
-      message: "Phone number must be at most 20 characters long",
+      message: "Nomor telepon maksimal 20 karakter",
     }),
   city_district: z
     .string()
     .min(3, {
-      message: "City/District must be at least 3 character long",
+      message: "Kota/Kabupaten harus diisi",
     })
     .max(100),
   postal_code: z.string().length(5, {
-    message: "Postal code must be 5 characters long",
+    message: "Kode pos harus terdiri dari 5 angka",
   }),
   address: z
     .string()
     .min(5, {
-      message: "Address must be filled",
+      message: "Alamat lengkap harus diisi",
     })
     .max(200, {
-      message: "Address must be at most 200 characters long",
+      message: "Alamat lengkap maksimal 200 karakter",
     }),
   notes: z
     .string()
     .max(50, {
-      message: "Notes must be at most 50 characters long",
+      message: "Catatan maksimal 50 karakter",
     })
     .optional()
     .nullable(),
 })
 
 export type TAddressSchema = z.infer<typeof addressSchema>
+
+export const discussionSchema = z.object({
+  message: z
+    .string()
+    .min(1, {
+      message: "Tulis pertanyaanmu terlebih dahulu",
+    })
+    .max(2000, {
+      message: "Pertanyaanmu terlalu panjang. Maksimal 2000 karakter",
+    }),
+})
+
+export type DiscussionSchema = z.infer<typeof discussionSchema>
 
 export type TAddressFullSchema = TAddressSchema & {
   province: string
