@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { TRegisterSchema, registerSchema } from "@/lib/types"
 import { signIn } from "next-auth/react"
 import { SubmitButton } from "@/components/submit-button"
+import { InputPassword } from "@/components/InputPassword"
 
 export const SignUpForm = () => {
   const router = useRouter()
@@ -125,7 +126,7 @@ export const SignUpForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="********" type="password" {...field} />
+                  <InputPassword {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

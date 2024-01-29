@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useRouter, useSearchParams } from "next/navigation"
 import { TLoginSchema, loginSchema } from "@/lib/types"
 import { SubmitButton } from "@/components/submit-button"
+import { InputPassword } from "@/components/InputPassword"
 
 export const SignInForm = () => {
   const router = useRouter()
@@ -85,7 +86,7 @@ export const SignInForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="********" type="password" {...field} />
+                  <InputPassword {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
