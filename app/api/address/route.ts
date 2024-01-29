@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const hasPrimary = addresses.some((address) => address.primary)
 
     const resProvince = await fetch(
-      "http://localhost:3000/api/rajaongkir/province"
+      `${process.env.BASE_URL}/api/rajaongkir/province`
     )
     const dataProvince: ProvinceResultType = await resProvince.json()
     const getProvince = dataProvince.rajaongkir.results.find((res) =>
@@ -101,47 +101,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { status: 201, message: "Address created" },
       { status: 201 }
-    )
-  } catch (error) {
-    return NextResponse.json({ status: 400, error }, { status: 400 })
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  const currentUser = await getCurrentUser()
-
-  if (!currentUser) {
-    redirect("/login")
-  }
-
-  const data: TAddressFullSchema & { id: string } = await request.json()
-
-  try {
-    const address = addressSchema.parse({
-      label: data.label,
-      name: data.name,
-      phone: data.phone,
-      city_district: data.city_district,
-      postal_code: data.postal_code,
-      address: data.address,
-      notes: data.notes,
-    })
-
-    await db.address.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        ...address,
-        district: data.district,
-        city: data.city,
-        province: data.province,
-      },
-    })
-
-    return NextResponse.json(
-      { status: 200, message: "Address updated" },
-      { status: 200 }
     )
   } catch (error) {
     return NextResponse.json({ status: 400, error }, { status: 400 })

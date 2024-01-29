@@ -23,10 +23,12 @@ export async function POST(request: NextRequest) {
       services_fee: services_fee,
       total: data.price * data.quantity + data.shippingCost + services_fee,
       payment_status: payment_status.PENDING_PAYMENT,
+      courier: data.courier,
+      weight: data.weight,
     },
   })
 
-  const res = await fetch("http://localhost:3000/api/midtrans/token", {
+  const res = await fetch(`${process.env.BASE_URL}/api/midtrans/token`, {
     method: "POST",
     body: JSON.stringify({
       order_id: newTransaction.id,

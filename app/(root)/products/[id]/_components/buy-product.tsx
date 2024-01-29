@@ -20,6 +20,11 @@ import { SelectAddress } from "./select-address"
 import { Address } from "@prisma/client"
 import { Separator } from "@/components/ui/separator"
 
+type Courier = {
+  name: string
+  cost: number
+}
+
 export function BuyProduct({
   id,
   title,
@@ -42,7 +47,7 @@ export function BuyProduct({
   const [open, setOpen] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [address, setAddress] = useState("")
-  const [shippingCost, setShippingCost] = useState(0)
+  const [courier, setCourier] = useState<Courier>()
 
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -68,7 +73,9 @@ export function BuyProduct({
       price: price,
       quantity: quantity,
       address: address,
-      shippingCost: shippingCost,
+      shippingCost: courier?.cost,
+      weight: weight,
+      courier: courier?.name,
     }
 
     const res = await fetch("/api/transactions", {
@@ -78,14 +85,13 @@ export function BuyProduct({
 
     if (!res.ok) {
       alert("Terjadi kesalahan, silahkan coba lagi")
+      setIsLoading(false)
       return
     }
 
     const requestData = await res.json()
 
     router.push(`/dashboard/transactions?pay=${requestData.snap_token}`)
-
-    setIsLoading(false)
   }
 
   return (
@@ -172,10 +178,6 @@ export function BuyProduct({
                   </div>
                   <span>Stock: {stock}</span>
                 </div>
-
-                <div>
-                  <Button variant="link">Tambah catatan</Button>
-                </div>
               </div>
             </div>
             <span className="text-md font-medium">Pengiriman</span>
@@ -183,7 +185,7 @@ export function BuyProduct({
               origin={origin}
               weight={weight}
               setAddress={(e) => setAddress(e)}
-              shippingCost={(e) => setShippingCost(e)}
+              courier={(e) => setCourier(e)}
             />
           </div>
           <div className="flex flex-col gap-1 text-sm">
@@ -197,7 +199,7 @@ export function BuyProduct({
               <span className="text-muted-foreground">
                 Biaya Pengiriman ({weight} grams)
               </span>
-              <span>Rp{currencyFormat(shippingCost)}</span>
+              <span>Rp{courier ? currencyFormat(courier.cost) : 0}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Biaya Layanan</span>
@@ -207,7 +209,10 @@ export function BuyProduct({
             <div className="flex justify-between font-medium">
               <span>Total Bayar</span>
               <span>
-                Rp{currencyFormat(price * quantity + shippingCost + 5000)}
+                Rp
+                {currencyFormat(
+                  price * quantity + (courier ? courier.cost : 0) + 5000
+                )}
               </span>
             </div>
           </div>
@@ -215,10 +220,14 @@ export function BuyProduct({
             {isLoading ? (
               <Button disabled className="flex gap-2 pr-4">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
+                Harap tunggu...
               </Button>
             ) : (
-              <Button onClick={createTransaction} className="flex gap-2 pr-4">
+              <Button
+                disabled={!address || !courier}
+                onClick={createTransaction}
+                className="flex gap-2 pr-4"
+              >
                 <CreditCard />
                 Bayar
               </Button>
@@ -232,7 +241,7 @@ export function BuyProduct({
           onClick={decreaseQuantity}
           size="icon"
           variant="ghost"
-          disabled={quantity <= 1 && true}
+          disabled={quantity <= 1}
         >
           <Minus size={16} />
         </Button>
@@ -255,7 +264,7 @@ export function BuyProduct({
           onClick={increaseQuantity}
           size="icon"
           variant="ghost"
-          disabled={quantity >= stock && true}
+          disabled={quantity >= stock}
         >
           <Plus size={16} />
         </Button>
