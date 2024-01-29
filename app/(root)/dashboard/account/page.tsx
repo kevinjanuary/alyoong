@@ -1,28 +1,39 @@
-import { getSession } from "@/lib/session"
+import { getCurrentUser } from "@/lib/session"
 import { PageHeading } from "../_components/page-heading"
 import { redirect } from "next/navigation"
-import Image from "next/image"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import ChangeNameForm from "./_components/change-name"
+import ChangePasswordForm from "./_components/change-password"
+import ChangeImagesForm from "./_components/change-images"
 
 const AccountPage = async () => {
-  const currentSession = await getSession()
+  const user = await getCurrentUser()
 
-  if (!currentSession) {
+  if (!user) {
     redirect("/login?redirect=/dashboard/account")
   }
 
   return (
     <div>
       <PageHeading title="Akun" subtitle="Kelola akun Anda" />
-      <div className="flex flex-col">
-        <Image
-          src={currentSession.user?.image || ""}
-          alt="..."
-          width={200}
-          height={200}
-          className="w-28"
-        />
-        <span>Email: {currentSession.user?.email}</span>
-        <span>Nama: {currentSession.user?.name}</span>
+      <div className="flex gap-8">
+        <div className="mb-auto w-1/4">
+          <Avatar className="w-full h-auto aspect-square">
+            <AvatarImage
+              src={user.image ? user.image + `?${Date.now()}` : undefined}
+            />
+            <AvatarFallback className="text-6xl">
+              {user.name?.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+
+          <ChangeImagesForm />
+        </div>
+
+        <div className="w-2/4 space-y-4">
+          <ChangeNameForm user={user} />
+          <ChangePasswordForm />
+        </div>
       </div>
     </div>
   )
