@@ -31,6 +31,9 @@ const OrdersPage = async () => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   })
 
   return (
@@ -95,7 +98,9 @@ const OrdersPage = async () => {
                     Rp{currencyFormat(Number(item.total))}
                   </span>
                 </div>
-                <ManageOrder id={item.id} />
+                {item.shipping_status !== shipping_status.DELIVERED && (
+                  <ManageOrder id={item.id} />
+                )}
               </div>
             </div>
           ))
