@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { PageHeading } from "../_components/page-heading"
 import { AddressModal } from "./_components/address-modal"
 import { getCurrentUser } from "@/lib/session"
@@ -8,6 +7,7 @@ import { DeleteAddress } from "./_components/delete-address"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { NoData } from "../_components/no-data"
+import PrimaryButton from "./_components/primary-button"
 
 const AddressPage = async () => {
   const currentUser = await getCurrentUser()
@@ -74,10 +74,11 @@ const AddressPage = async () => {
                         description="Pastikan Anda mengubah alamat dengan benar."
                         defaultValue={address}
                         noCounter
+                        editMode
                       />
                       {!address.primary && (
                         <>
-                          <Button size="sm">Jadikan utama</Button>
+                          <PrimaryButton addressId={address.id} />
                           <DeleteAddress id={address.id} />
                         </>
                       )}
