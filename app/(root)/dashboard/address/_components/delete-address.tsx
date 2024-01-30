@@ -2,15 +2,15 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { Loader2 } from "lucide-react"
@@ -58,28 +58,34 @@ export function DeleteAddress({ id }: { id: string }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button size="sm">Delete</Button>
+        <Button size="sm" variant="destructive">
+          Hapus
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete address?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            address data from our servers.
-          </AlertDialogDescription>
+          <AlertDialogTitle>Hapus alamat ini?</AlertDialogTitle>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Alamat yang sudah dihapus tidak dapat dikembalikan. Pastikan Anda
+              yakin ingin menghapus alamat ini. Anda dapat menambahkan alamat
+              baru kapan saja.
+            </AlertDescription>
+          </Alert>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <fieldset disabled={submit} className="group">
             <div className="flex gap-2">
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>Batal</AlertDialogCancel>
               {submit ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                  Mohon tunggu ya...
                 </Button>
               ) : (
                 <Button variant="destructive" onClick={handleDelete}>
-                  Delete
+                  Hapus alamat
                 </Button>
               )}
             </div>
