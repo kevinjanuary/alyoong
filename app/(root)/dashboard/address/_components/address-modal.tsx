@@ -13,6 +13,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AddressForm } from "./address-form"
 import { TAddressFullSchema } from "@/lib/types"
+import { Address } from "@prisma/client"
 
 export function AddressModal({
   button,
@@ -22,14 +23,16 @@ export function AddressModal({
   noCounter = false,
   defaultValue,
   onChange,
+  editMode = false,
 }: {
   button: string
   title: string
   description: string
   noCounter?: boolean
   length?: number
-  defaultValue?: TAddressFullSchema
+  defaultValue?: Address
   onChange?: () => void
+  editMode?: boolean
 }) {
   const [open, setOpen] = useState(false)
 
@@ -54,6 +57,7 @@ export function AddressModal({
                 setOpen={() => setOpen(false)}
                 defaultValue={defaultValue}
                 onChange={onChange}
+                editMode={editMode}
               />
             </div>
           </ScrollArea>

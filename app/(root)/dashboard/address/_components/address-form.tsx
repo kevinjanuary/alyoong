@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form"
-import { TAddressSchema, addressSchema } from "@/lib/types"
+import { TAddressFullSchema, TAddressSchema, addressSchema } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import {
@@ -18,11 +18,12 @@ import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
 import { CityDistrictResultType, resultType } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { SubmitButton } from "@/components/submit-button"
+import { editAddress } from "@/actions/address"
+import { Address } from "@prisma/client"
 
 const city = [
   "Jakarta",
@@ -41,10 +42,12 @@ export function AddressForm({
   setOpen,
   defaultValue,
   onChange,
+  editMode = false,
 }: {
   setOpen: () => void
-  defaultValue?: TAddressSchema
+  defaultValue?: Address
   onChange?: () => void
+  editMode?: boolean
 }) {
   const [cityDistrictFocus, setCityDistrictFocus] = useState(false)
 
@@ -71,22 +74,74 @@ export function AddressForm({
   const form = useForm<TAddressSchema>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      label: defaultValue?.label || "Rumah",
-      name: defaultValue?.name || "Kevin",
-      phone: defaultValue?.phone || "081234455678",
+      label: defaultValue?.label || "",
+      name: defaultValue?.name || "",
+      phone: defaultValue?.phone || "",
       city_district: defaultValue?.city_district || "",
-      address: defaultValue?.address || "Jalan Kemayoran Gempol No. 1",
+      address: defaultValue?.address || "",
       postal_code: defaultValue?.postal_code || "",
       notes: defaultValue?.notes || "",
     },
   })
   const isSubmitting = form.formState.isSubmitting
 
+  const onEdit = async (values: z.infer<typeof addressSchema>) => {
+    if (!defaultValue) return
+
+    const result = cityDistrictResult
+      ? cityDistrictResult.find((item) => item.id === cityDistrictSelected)
+      : {
+          name: defaultValue.city_district,
+          administrative_division_level_1_name: defaultValue.province,
+          administrative_division_level_2_name: defaultValue.city,
+          administrative_division_level_3_name: defaultValue.district,
+        }
+    if (!result) throw "City District not found"
+    if (postalCode.length < 5) throw "Postal Code not found"
+
+    const {
+      name,
+      administrative_division_level_1_name,
+      administrative_division_level_2_name,
+      administrative_division_level_3_name,
+    } = result
+
+    const res = await editAddress(defaultValue.id, {
+      ...values,
+      city_district: name,
+      province: administrative_division_level_1_name,
+      city: administrative_division_level_2_name,
+      district: administrative_division_level_3_name,
+      province_id: defaultValue.province_id,
+      city_id: defaultValue.city_id,
+    })
+
+    if (!res.success) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong.",
+        description: "There was a problem with your request. Please try again.",
+        duration: 2000,
+      })
+    }
+
+    toast({
+      title: "Address has added!",
+      description: "Successfully added address.",
+      duration: 2000,
+    })
+    setOpen()
+    onChange && onChange()
+
+    router.refresh()
+  }
+
   async function onSubmit(values: z.infer<typeof addressSchema>) {
     try {
       const result = cityDistrictResult?.find(
         (item) => item.id === cityDistrictSelected
       )
+
       if (!result) throw "City District not found"
       if (postalCode.length < 5) throw "Postal Code not found"
 
@@ -171,7 +226,7 @@ export function AddressForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(editMode ? onEdit : onSubmit)}>
         <fieldset disabled={isSubmitting} className="group space-y-8">
           <FormField
             control={form.control}
@@ -233,7 +288,7 @@ export function AddressForm({
                   <FormLabel>Kota & Kecamatan</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Kota & Kecamatan (Min. 3 character for search)"
+                      placeholder="(Ketik minimal 3 huruf untuk mencari kota/kabupaten & kecamatan)"
                       {...field}
                       value={cityDistrictQuery}
                       onChange={(event) => {
@@ -260,8 +315,8 @@ export function AddressForm({
                       )}
                     >
                       <span className="px-6">
-                        Untuk mempersingkat waktu, isi dengan kecamatan tujuan
-                        pengiriman
+                        Untuk mempersingkat waktu, isi dengan nama kecamatan
+                        Anda
                       </span>
                       <div
                         className={cn(
@@ -368,9 +423,12 @@ export function AddressForm({
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Alamat lengkap</FormLabel>
                 <FormControl>
-                  <Input placeholder="Address" {...field} />
+                  <Input
+                    placeholder="Ketikkan alamat lengkapmu disini yaa"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -381,10 +439,10 @@ export function AddressForm({
             name="notes"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Courier Notes (optional)</FormLabel>
+                <FormLabel>Catatan untuk kurir (opsional)</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Courier Notes"
+                    placeholder="Catatan untuk kurir (opsional)"
                     {...field}
                     value={field.value || ""}
                   />
@@ -397,10 +455,13 @@ export function AddressForm({
             )}
           />
           <div className="flex gap-2">
-            <SubmitButton submit={isSubmitting} text="Add address" />
+            <SubmitButton
+              submit={isSubmitting}
+              text={editMode ? "Simpan perubahan" : "Tambahkan alamat"}
+            />
             <DialogClose asChild>
               <Button type="button" variant="outline">
-                Cancel
+                Batalkan
               </Button>
             </DialogClose>
           </div>
