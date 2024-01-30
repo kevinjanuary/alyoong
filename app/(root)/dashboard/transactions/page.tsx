@@ -10,6 +10,8 @@ import { payment_status, shipping_status } from "@prisma/client"
 import { PageHeading } from "../_components/page-heading"
 import { NoData } from "../_components/no-data"
 import { FinishTransaction } from "./_components/finish-transaction"
+import { DetailTransaction } from "./_components/detail-transaction"
+import PayButton from "./_components/pay-button"
 
 const TransactionsPage = async () => {
   const user = await getCurrentUser()
@@ -52,21 +54,19 @@ const TransactionsPage = async () => {
                     year: "numeric",
                   })}
                 </span>
-                {item.payment_status === payment_status.PAID ? (
-                  <Badge variant="default" className="normal-case">
-                    {item.shipping_status === shipping_status.PENDING_SHIPPING
-                      ? "Menunggu dikirim"
-                      : item.shipping_status === shipping_status.SHIPPING
-                      ? "Sedang dikirim"
-                      : item.shipping_status === shipping_status.DELIVERED
-                      ? "Sudah diterima"
-                      : "Dibatalkan"}
-                  </Badge>
-                ) : (
-                  <Badge variant="default" className="normal-case">
-                    {item.payment_status}
-                  </Badge>
-                )}
+                <Badge variant="default" className="normal-case">
+                  {item.payment_status === payment_status.PENDING_PAYMENT
+                    ? "Menunggu pembayaran"
+                    : item.payment_status === payment_status.CANCELED
+                    ? "Dibatalkan"
+                    : item.payment_status === payment_status.PAID &&
+                      (item.shipping_status === shipping_status.PENDING_SHIPPING
+                        ? "Menunggu dikirim"
+                        : item.shipping_status === shipping_status.SHIPPING
+                        ? "Sedang dikirim"
+                        : item.shipping_status === shipping_status.DELIVERED &&
+                          "Sudah diterima")}
+                </Badge>
               </div>
               <span>{item.product.user.name}</span>
               <div className="grid grid-cols-[64px,auto] gap-4">
@@ -101,10 +101,15 @@ const TransactionsPage = async () => {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline">Lihat detail</Button>
-                  {item.payment_status === payment_status.PENDING_PAYMENT && (
-                    <Button>Bayar</Button>
-                  )}
+                  <DetailTransaction transaction={item} />
+                  {item.payment_status === payment_status.PENDING_PAYMENT &&
+                    (item.snap_token ? (
+                      <PayButton snap_token={item.snap_token} />
+                    ) : (
+                      <span className="text-destructive">
+                        Terjadi kesalahan, mohon hubungi admin.
+                      </span>
+                    ))}
                   {item.shipping_status === shipping_status.SHIPPING && (
                     <FinishTransaction id={item.id} />
                   )}
