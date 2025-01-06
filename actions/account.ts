@@ -51,7 +51,7 @@ export const changePhoto = async (data: FormData) => {
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
 
-  const dir = join(process.cwd(), "public", "uploads")
+  const dir = join(process.cwd(), "public", "uploads", "users")
   await mkdir(dir, { recursive: true })
 
   const path = join(dir, `${user.id}.png`)
@@ -62,7 +62,7 @@ export const changePhoto = async (data: FormData) => {
       id: user.id,
     },
     data: {
-      image: `/uploads/${user.id}.png`,
+      image: `/uploads/users/${user.id}.png`,
     },
   })
 
