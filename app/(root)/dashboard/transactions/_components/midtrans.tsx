@@ -1,6 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
+
+declare global {
+  interface Window {
+    snap: any
+  }
+}
 
 export function Midtrans({ token }: { token: string }) {
   const isFirstRender = useRef(true)
@@ -26,5 +32,5 @@ export function Midtrans({ token }: { token: string }) {
     }
   }, [token])
 
-  return <></>
+  return null
 }

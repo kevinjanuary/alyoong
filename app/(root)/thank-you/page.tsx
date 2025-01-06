@@ -9,9 +9,9 @@ const ThankyouPage = ({
 }: {
   searchParams: { [key: string]: string }
 }) => {
-  if (window.location.hostname !== "localhost") {
-    redirect(`http://localhost:3000/thank-you${window.location.search}`)
-  }
+  // if (window.location.hostname !== "localhost") {
+  //   redirect(`http://localhost:3000/thank-you${window.location.search}`)
+  // }
   const { order_id, status_code, transaction_status } = searchParams
 
   return (
