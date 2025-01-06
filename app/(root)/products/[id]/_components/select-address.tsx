@@ -94,6 +94,7 @@ export function SelectAddress({
         })
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [origin, selected, weight])
 
   useEffect(() => {
