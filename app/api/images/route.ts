@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
 
-  const pathname = join("uploads/images", currentUser.id.toString())
+  const pathname = join("uploads/products", currentUser.id.toString())
   const dirPath = join(process.cwd(), "public", pathname)
   await mkdir(dirPath, { recursive: true })
   const fileName = `${Date.now()}${Math.round(
