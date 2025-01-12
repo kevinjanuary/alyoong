@@ -95,6 +95,9 @@ model Product {
   reviews      Review[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@fulltext([name])
+  @@fulltext([name, category, description])
 }
 
 model Comment {

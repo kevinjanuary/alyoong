@@ -11,34 +11,29 @@ const SearchPage = async ({
     query: string
   }
 }) => {
+  const query = decodeURIComponent(params.query)
+
   const products = await db.product.findMany({
     where: {
-      AND: [
-        {
-          stock: {
-            gt: 0,
-          },
-        },
-        {
-          OR: [
-            {
-              name: {
-                contains: params.query,
-              },
-            },
-            {
-              category: {
-                contains: params.query,
-              },
-            },
-            {
-              description: {
-                contains: params.query,
-              },
-            },
-          ],
-        },
-      ],
+      stock: {
+        gt: 0,
+      },
+      name: {
+        search: query,
+      },
+      category: {
+        search: query,
+      },
+      description: {
+        search: query,
+      },
+    },
+    orderBy: {
+      _relevance: {
+        fields: ["name", "category", "description"],
+        search: query,
+        sort: "desc",
+      },
     },
   })
 
@@ -48,7 +43,7 @@ const SearchPage = async ({
         <div className="mt-4 flex flex-col">
           <h5 className="text-2xl font-semibold">{`Tidak ada barang :((`}</h5>
           <span className="text-neutral-500">
-            Tidak ada barang yang cocok dengan kata kunci {`"${params.query}"`}.
+            Tidak ada barang yang cocok dengan kata kunci {`"${query}"`}.
           </span>
 
           <span className="text-neutral-500">
@@ -64,7 +59,7 @@ const SearchPage = async ({
     <div className="max-w-6xl mx-auto">
       <h2 className="text-2xl font-medium">
         Menampilkan {products.length} barang untuk
-        <span>{` "${params.query}"`}</span>
+        <span>{` "${query}"`}</span>
       </h2>
 
       <div className="grid grid-cols-5 gap-3 mt-4">
