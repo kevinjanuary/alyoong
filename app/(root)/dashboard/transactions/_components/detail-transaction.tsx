@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import {
   type Product,
+  Review,
   shipping_status,
   type Transaction,
   User,
@@ -18,6 +19,8 @@ import {
 import Image from "next/image"
 import { currencyFormat } from "@/lib/currencyFormat"
 import { imageLoader } from "@/lib/utils-client"
+import { StarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export function DetailTransaction({
   transaction,
@@ -26,6 +29,7 @@ export function DetailTransaction({
     product: Product & {
       user: User
     }
+    reviews: Review | null
   }
 }) {
   return (
@@ -37,8 +41,7 @@ export function DetailTransaction({
         <DialogHeader>
           <DialogTitle>Detail transaksi</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Lihat transaksi kamu dengan {transaction.product.user.name}
           </DialogDescription>
         </DialogHeader>
 
@@ -76,6 +79,47 @@ export function DetailTransaction({
               </span>
             </div>
           </div>
+
+          {transaction.reviews && (
+            <div className="flex flex-col space-y-2 border rounded-md p-4">
+              <span className="font-medium">Ulasan produk</span>
+              <div className="flex space-x-4 text-sm">
+                <div className="flex flex-col text-muted-foreground shrink-0 space-y-1">
+                  <span>Rating</span>
+                  <span>Ulasan</span>
+                </div>
+                <div className="flex flex-col space-y-1">
+                  <span className="flex gap-2">
+                    :
+                    <div className="flex items-center">
+                      {[1, 2, 3, 4, 5].map((starValue) => (
+                        <StarIcon
+                          key={starValue}
+                          className={cn(
+                            "w-5 h-4 pr-1 last:p-0 last:w-4 fill-gray-200 stroke-gray-200",
+                            starValue <= transaction.reviews!.rating &&
+                              "fill-amber-300 stroke-amber-300"
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm">
+                      {transaction.reviews.rating === 1
+                        ? " (Kecewa)"
+                        : transaction.reviews.rating === 2
+                        ? " (Tidak Puas)"
+                        : transaction.reviews.rating === 3
+                        ? " (Kurang Puas)"
+                        : " (Puas)"}
+                    </span>
+                  </span>
+                  <span className="flex gap-1">
+                    :<p>&ldquo;{transaction.reviews.review}&rdquo;</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-col space-y-2">
             <span className="font-medium">Detail produk</span>

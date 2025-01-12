@@ -8,6 +8,7 @@ import Image from "next/image"
 import { redirect } from "next/navigation"
 import { NoData } from "../_components/no-data"
 import { PageHeading } from "../_components/page-heading"
+import { AddProductReview } from "./_components/add-review"
 import { DetailTransaction } from "./_components/detail-transaction"
 import { FinishTransaction } from "./_components/finish-transaction"
 import { Pay } from "./_components/pay"
@@ -24,6 +25,7 @@ const TransactionsPage = async () => {
       userId: user.id,
     },
     include: {
+      reviews: true,
       product: {
         include: {
           user: true,
@@ -114,6 +116,10 @@ const TransactionsPage = async () => {
                   {item.shipping_status === shipping_status.SHIPPING && (
                     <FinishTransaction id={item.id} />
                   )}
+                  {!item.reviews &&
+                    item.shipping_status === shipping_status.DELIVERED && (
+                      <AddProductReview transactionId={item.id} />
+                    )}
                 </div>
               </div>
             </div>
