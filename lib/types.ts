@@ -1,5 +1,10 @@
 import { z } from "zod"
 
+export const UserRoles = {
+  ADMIN: "ADMIN",
+  USER: "USER",
+}
+
 export const registerSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email({
