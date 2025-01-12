@@ -61,22 +61,23 @@ const ProductsCatalogPage = async ({
         },
       },
     },
-    orderBy: query
-      ? {
-          _relevance: {
-            fields: ["name", "category", "description"],
-            search: query,
-            sort: "desc",
-          },
-        }
-      : [
-          {
-            stock: "desc",
-          },
-          {
-            createdAt: "desc",
-          },
-        ],
+    orderBy: [
+      {
+        stock: "desc",
+      },
+      {
+        createdAt: "desc",
+      },
+      {
+        _relevance: query
+          ? {
+              fields: ["name", "category", "description"],
+              search: query,
+              sort: "desc",
+            }
+          : undefined,
+      },
+    ],
   })
 
   return (
