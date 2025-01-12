@@ -220,18 +220,18 @@ export function BuyProduct({
           </div>
           <div className="flex gap-4 items-center justify-end mt-auto">
             {isLoading ? (
-              <Button disabled className="flex gap-2 pr-4">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Button disabled className="flex gap-2 pr-4 mt-6 w-full">
+                <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" />
                 Harap tunggu...
               </Button>
             ) : (
               <Button
                 disabled={!address || !courier}
                 onClick={createTransaction}
-                className="flex gap-2 pr-4"
+                className="flex gap-2 pr-4 mt-6 w-full"
               >
-                <CreditCard />
-                Bayar
+                <CreditCard size={16} />
+                Bayar Sekarang
               </Button>
             )}
           </div>
