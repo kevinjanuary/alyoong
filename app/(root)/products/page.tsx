@@ -9,6 +9,7 @@ const ProductsCatalogPage = async ({
   searchParams,
 }: {
   searchParams?: {
+    query?: string
     category?: string
   }
 }) => {
@@ -26,9 +27,24 @@ const ProductsCatalogPage = async ({
 
   const max8Categories = categories.slice(0, 8)
 
+  const query =
+    searchParams && searchParams.query
+      ? decodeURIComponent(searchParams.query)
+      : undefined
+
   const products = await db.product.findMany({
     where: {
-      category: searchParams?.category,
+      name: {
+        search: query,
+      },
+      category: query
+        ? {
+            search: query,
+          }
+        : searchParams?.category,
+      description: {
+        search: query,
+      },
     },
     include: {
       user: {
@@ -45,19 +61,33 @@ const ProductsCatalogPage = async ({
         },
       },
     },
-    orderBy: [
-      {
-        stock: "desc",
-      },
-      {
-        createdAt: "desc",
-      },
-    ],
+    orderBy: query
+      ? {
+          _relevance: {
+            fields: ["name", "category", "description"],
+            search: query,
+            sort: "desc",
+          },
+        }
+      : [
+          {
+            stock: "desc",
+          },
+          {
+            createdAt: "desc",
+          },
+        ],
   })
 
   return (
     <div className="max-w-6xl mx-auto space-y-4">
       <h2 className="text-2xl font-medium">Daftar Produk</h2>
+
+      {query && (
+        <span>
+          Menampilkan {products.length} barang untuk &quot;{query}&quot;
+        </span>
+      )}
 
       <div className="grid grid-cols-[200px_auto] items-start gap-4">
         <div className="border rounded-md p-4">

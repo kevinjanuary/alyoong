@@ -3,19 +3,32 @@
 import { Search } from "lucide-react"
 import { Input } from "./ui/input"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const SearchField = () => {
-  const [query, setQuery] = useState("")
+  const searchParams = useSearchParams()
   const router = useRouter()
+  const [query, setQuery] = useState(
+    searchParams.get("query")?.toString() || ""
+  )
 
   return (
     <div className="relative">
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          if (!query.trim()) return
-          router.push(`/search/${query}`)
+
+          const keywords = query.trim()
+          const params = new URLSearchParams(searchParams)
+
+          if (keywords) {
+            params.set("query", keywords)
+            params.delete("category")
+          } else {
+            params.delete("query")
+          }
+
+          router.push(`/products?${params.toString()}`)
         }}
       >
         <Input
