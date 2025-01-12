@@ -20,7 +20,7 @@ const AccountPage = async () => {
         <div className="mb-auto w-1/4">
           <Avatar className="w-full h-auto aspect-square">
             <AvatarImage
-              src={user.image ? user.image + `?${Date.now()}` : undefined}
+              src={process.env.NEXT_PUBLIC_IMAGE_URL! + user.image || undefined}
             />
             <AvatarFallback className="text-6xl">
               {user.name?.charAt(0).toUpperCase()}
