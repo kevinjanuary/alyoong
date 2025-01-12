@@ -37,7 +37,7 @@ export function EditProductForm({ product }: { product: Product }) {
   const [warranty, setWarranty] = useState(product.warranty === "Active")
   const [file, setFile] = useState<File>()
   const [image, setImage] = useState<string | ArrayBuffer | null | undefined>(
-    product.images
+    process.env.NEXT_PUBLIC_IMAGE_URL + product.images
   )
   const { toast } = useToast()
   const router = useRouter()

@@ -17,6 +17,7 @@ import {
 } from "@prisma/client"
 import Image from "next/image"
 import { currencyFormat } from "@/lib/currencyFormat"
+import { imageLoader } from "@/lib/utils-client"
 
 export function DetailTransaction({
   transaction,
@@ -81,6 +82,7 @@ export function DetailTransaction({
 
             <div className="flex space-x-4">
               <Image
+                loader={imageLoader}
                 src={transaction.product.images}
                 alt={transaction.product.name}
                 width={64}

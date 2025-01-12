@@ -19,6 +19,7 @@ import { useState } from "react"
 import { SelectAddress } from "./select-address"
 import { Address } from "@prisma/client"
 import { Separator } from "@/components/ui/separator"
+import { imageLoader } from "@/lib/utils-client"
 
 type Courier = {
   name: string
@@ -122,6 +123,7 @@ export function BuyProduct({
             <div className="grid gap-4 grid-cols-[64px,auto] my-4">
               <div className="w-full">
                 <Image
+                  loader={imageLoader}
                   src={images}
                   alt={title}
                   width={64}

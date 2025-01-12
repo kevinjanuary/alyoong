@@ -1,5 +1,6 @@
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
+import { imageLoader } from "@/lib/utils-client"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -77,6 +78,7 @@ const SearchPage = async ({
               className="h-full flex flex-col"
             >
               <Image
+                loader={imageLoader}
                 src={product.images}
                 alt={product.name}
                 width={200}

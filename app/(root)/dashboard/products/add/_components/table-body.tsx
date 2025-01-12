@@ -1,24 +1,23 @@
 "use client"
 
-import { Product } from "@prisma/client"
-import { TableCell, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { TableCell, TableRow } from "@/components/ui/table"
+import { currencyFormat } from "@/lib/currencyFormat"
+import { imageLoader } from "@/lib/utils-client"
+import { Product } from "@prisma/client"
+import { MoreHorizontal } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { currencyFormat } from "@/lib/currencyFormat"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal } from "lucide-react"
-import { deleteProduct } from "@/actions/product"
-import DeleteProduct from "./delete-product"
 import { useState } from "react"
+import DeleteProduct from "./delete-product"
 
 const ProductsTableBody = ({ product }: { product: Product }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -29,10 +28,8 @@ const ProductsTableBody = ({ product }: { product: Product }) => {
         <div className="grid grid-cols-[64px,auto] gap-4 items-center">
           <div className="mb-auto">
             <Image
-              src={
-                product.images ||
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-              }
+              loader={imageLoader}
+              src={product.images}
               alt={product.name}
               width={64}
               height={64}

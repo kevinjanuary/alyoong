@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { payment_status, shipping_status } from "@prisma/client"
 import { NoData } from "../_components/no-data"
 import { ManageOrder } from "./_components/manage-order"
+import { imageLoader } from "@/lib/utils-client"
 
 const OrdersPage = async () => {
   const user = await getCurrentUser()
@@ -70,6 +71,7 @@ const OrdersPage = async () => {
               <span className="font-medium">{item.user.name}</span>
               <div className="grid grid-cols-[64px,auto] gap-4">
                 <Image
+                  loader={imageLoader}
                   src={item.product.images}
                   alt={item.product.name}
                   width={64}

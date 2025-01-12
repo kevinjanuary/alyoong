@@ -1,16 +1,16 @@
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
 import { getCurrentUser } from "@/lib/session"
+import { imageLoader } from "@/lib/utils-client"
+import { payment_status, shipping_status } from "@prisma/client"
 import Image from "next/image"
 import { redirect } from "next/navigation"
-import { Pay } from "./_components/pay"
-import { payment_status, shipping_status } from "@prisma/client"
-import { PageHeading } from "../_components/page-heading"
 import { NoData } from "../_components/no-data"
-import { FinishTransaction } from "./_components/finish-transaction"
+import { PageHeading } from "../_components/page-heading"
 import { DetailTransaction } from "./_components/detail-transaction"
+import { FinishTransaction } from "./_components/finish-transaction"
+import { Pay } from "./_components/pay"
 import PayButton from "./_components/pay-button"
 
 const TransactionsPage = async () => {
@@ -71,6 +71,7 @@ const TransactionsPage = async () => {
               <span>{item.product.user.name}</span>
               <div className="grid grid-cols-[64px,auto] gap-4">
                 <Image
+                  loader={imageLoader}
                   src={item.product.images}
                   alt={item.product.name}
                   width={64}

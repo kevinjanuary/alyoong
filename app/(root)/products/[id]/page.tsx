@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import DiscussionForm from "./_components/discussion-form"
 import { DiscussionReply } from "./_components/discussion-reply"
+import { imageLoader } from "@/lib/utils-client"
 
 const ProductsPage = async ({ params: { id } }: { params: { id: string } }) => {
   const product = await db.product.findUnique({
@@ -79,6 +80,7 @@ const ProductsPage = async ({ params: { id } }: { params: { id: string } }) => {
           <div className="w-1/2">
             <div className=" bg-white rounded-lg border">
               <Image
+                loader={imageLoader}
                 src={product.images}
                 alt={product.name}
                 width={500}
