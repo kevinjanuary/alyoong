@@ -16,6 +16,12 @@ export async function POST(request: NextRequest) {
     },
     select: {
       userId: true,
+      price: true,
+      product: {
+        select: {
+          userId: true,
+        },
+      },
     },
   })
 
@@ -28,15 +34,27 @@ export async function POST(request: NextRequest) {
   if (transaction.userId !== user.id)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
-  await db.transaction.update({
-    where: {
-      id,
-      userId: user.id,
-    },
-    data: {
-      shipping_status: shipping_status.DELIVERED,
-    },
-  })
+  await db.$transaction([
+    db.transaction.update({
+      where: {
+        id,
+        userId: transaction.userId,
+      },
+      data: {
+        shipping_status: shipping_status.DELIVERED,
+      },
+    }),
+    db.user.update({
+      where: {
+        id: transaction.product.userId,
+      },
+      data: {
+        balance: {
+          increment: Number(transaction.price),
+        },
+      },
+    }),
+  ])
 
   return NextResponse.json({ id }, { status: 200 })
 }
