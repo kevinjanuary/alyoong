@@ -39,16 +39,19 @@ const SearchPage = async ({
 
   if (products.length === 0) {
     return (
-      <div className="max-w-6xl mx-auto h-full flex items-center justify-center text-center">
-        <div className="mt-4 flex flex-col">
-          <h5 className="text-2xl font-semibold">{`Tidak ada barang :((`}</h5>
+      <div className="max-w-2xl mx-auto h-full flex items-center justify-center text-center">
+        <div className="flex flex-col gap-4">
+          <h5 className="text-2xl font-semibold">Tidak ada barang (˚ ˃̣̣̥⌓˂̣̣̥ )</h5>
           <span className="text-neutral-500">
             Tidak ada barang yang cocok dengan kata kunci {`"${query}"`}.
           </span>
 
           <span className="text-neutral-500">
             Coba cari barang lainnya di{" "}
-            <Link href="/products">halaman produk</Link>.
+            <Link href="/products" className="text-primary font-medium">
+              Halaman produk
+            </Link>
+            .
           </span>
         </div>
       </div>

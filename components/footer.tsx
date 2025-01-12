@@ -4,7 +4,7 @@ import Link from "next/link"
 const Footer = () => {
   return (
     <footer className="bg-white border-t">
-      <div className="px-4 py-10 flex flex-col items-center gap-4">
+      <div className="max-w-5xl w-full mx-auto px-4 py-10 flex flex-col items-center gap-4">
         <div className="w-[200px] h-[44px]">
           <Image
             src="/logo.png"
