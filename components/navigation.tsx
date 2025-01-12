@@ -3,23 +3,23 @@ import Link from "next/link"
 const categories = [
   {
     name: "PC",
-    path: "/",
+    path: "/products?category=PC",
   },
   {
     name: "Monitor",
-    path: "/",
+    path: "/products?category=Monitor",
   },
   {
     name: "Keyboard",
-    path: "/",
+    path: "/products?category=Keyboard",
   },
   {
     name: "Mouse",
-    path: "/",
+    path: "/products?category=Mouse",
   },
   {
     name: "Graphic Card",
-    path: "/",
+    path: "/products?category=Graphic Card",
   },
 ]
 
