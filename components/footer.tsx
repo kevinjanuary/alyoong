@@ -37,7 +37,7 @@ const Footer = () => {
           <span className="text-xs text-gray-400">Dibuat dengan ❤️ oleh</span>{" "}
           <a
             href="https://www.instagram.com/theweekend.8oys/"
-            className="text-xs"
+            className="text-xs text-gray-500"
           >
             theweekend.8oys
           </a>
