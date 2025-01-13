@@ -15,10 +15,12 @@ import {
   CircleUserRoundIcon,
   HomeIcon,
   LogOutIcon,
+  MessageCircleMoreIcon,
   PackageIcon,
   PackageSearchIcon,
   ReceiptIcon,
   SettingsIcon,
+  StarIcon,
   UserRoundIcon,
   UsersRoundIcon,
 } from "lucide-react"
@@ -78,6 +80,13 @@ export function Navbar() {
       <Separator className="my-1 h-[0.5px]" />
 
       <NavMenu
+        title="User"
+        link="/admin/users"
+        icon={<UsersRoundIcon size={18} />}
+        pathname={pathname}
+      />
+
+      <NavMenu
         title="Product"
         link="/admin/products"
         icon={<PackageIcon size={18} />}
@@ -85,9 +94,9 @@ export function Navbar() {
       />
 
       <NavMenu
-        title="User"
-        link="/admin/users"
-        icon={<UsersRoundIcon size={18} />}
+        title="Comment"
+        link="/admin/comments"
+        icon={<MessageCircleMoreIcon size={18} />}
         pathname={pathname}
       />
 
@@ -98,10 +107,17 @@ export function Navbar() {
         pathname={pathname}
       />
 
+      <NavMenu
+        title="Review"
+        link="/admin/reviews"
+        icon={<StarIcon size={18} />}
+        pathname={pathname}
+      />
+
       <Separator className="my-1" />
 
       <NavMenu
-        title="Setting"
+        title="Tombol Nuklir"
         link="/admin/settings"
         icon={<SettingsIcon size={18} />}
         pathname={pathname}
