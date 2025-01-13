@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
+import { ProductApprovalStatus } from "@/lib/types"
 import { imageLoader } from "@/lib/utils-client"
 import Image from "next/image"
 import Link from "next/link"
@@ -23,6 +24,9 @@ const ProductsCatalogPage = async ({
         id: "desc",
       },
     },
+    where: {
+      approval_status: ProductApprovalStatus.APPROVED,
+    },
   })
 
   const max8Categories = categories.slice(0, 8)
@@ -34,6 +38,7 @@ const ProductsCatalogPage = async ({
 
   const products = await db.product.findMany({
     where: {
+      approval_status: ProductApprovalStatus.APPROVED,
       name: {
         search: query,
       },

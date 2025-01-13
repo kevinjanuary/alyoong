@@ -1,5 +1,6 @@
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
+import { ProductApprovalStatus } from "@/lib/types"
 import { imageLoader } from "@/lib/utils-client"
 import Image from "next/image"
 import Link from "next/link"
@@ -8,6 +9,7 @@ const Products = async ({ limit }: { limit?: number }) => {
   const products = limit
     ? await db.product.findMany({
         where: {
+          approval_status: ProductApprovalStatus.APPROVED,
           stock: {
             gt: 0,
           },
@@ -34,6 +36,7 @@ const Products = async ({ limit }: { limit?: number }) => {
       })
     : await db.product.findMany({
         where: {
+          approval_status: ProductApprovalStatus.APPROVED,
           stock: {
             gt: 0,
           },

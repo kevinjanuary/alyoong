@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
+import { ProductApprovalStatus } from "@/lib/types"
 import { imageLoader } from "@/lib/utils-client"
 import { format, formatDistanceToNow } from "date-fns"
 import { id } from "date-fns/locale"
@@ -76,6 +77,32 @@ const AdminTransactionPage = async () => {
                       >
                         {product.name}
                       </Link>
+
+                      {product.approval_status ===
+                        ProductApprovalStatus.PENDING && (
+                        <div className="flex items-center gap-1">
+                          <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
+                          <span className="text-xs text-yellow-500">
+                            Pending
+                          </span>
+                        </div>
+                      )}
+                      {product.approval_status ===
+                        ProductApprovalStatus.REJECTED && (
+                        <div className="flex items-center gap-1">
+                          <div className="h-2 w-2 rounded-full bg-red-500"></div>
+                          <span className="text-xs text-red-500">Rejected</span>
+                        </div>
+                      )}
+                      {product.approval_status ===
+                        ProductApprovalStatus.APPROVED && (
+                        <div className="flex items-center gap-1">
+                          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                          <span className="text-xs text-green-500">
+                            Approved
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TableCell>

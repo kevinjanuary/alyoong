@@ -21,11 +21,13 @@ import { StarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatDistanceToNow } from "date-fns"
 import { id as idLocale } from "date-fns/locale"
+import { ProductApprovalStatus } from "@/lib/types"
 
 const ProductsPage = async ({ params: { id } }: { params: { id: string } }) => {
   const product = await db.product.findUnique({
     where: {
       id: id,
+      approval_status: ProductApprovalStatus.APPROVED,
     },
     include: {
       reviews: {

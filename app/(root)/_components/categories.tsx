@@ -1,4 +1,5 @@
 import { db } from "@/lib/prismadb"
+import { ProductApprovalStatus } from "@/lib/types"
 import {
   Gamepad2Icon,
   Keyboard,
@@ -26,6 +27,9 @@ const Categories = async () => {
       _count: {
         id: "desc",
       },
+    },
+    where: {
+      approval_status: ProductApprovalStatus.APPROVED,
     },
   })
 
