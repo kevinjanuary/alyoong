@@ -62,7 +62,7 @@ export function Navbar() {
         title="Dashboard"
         link="/admin"
         icon={<HomeIcon size={18} />}
-        pathname={pathname}
+        pathname={pathname === "/admin"}
       />
 
       <Separator className="my-1" />
@@ -83,14 +83,15 @@ export function Navbar() {
         pathname={pathname}
       />
 
-      <Separator className="my-1" />
-
       <NavMenu
         title="User"
         link="/admin/users"
         icon={<UsersRoundIcon size={18} />}
         pathname={pathname}
       />
+
+      <Separator className="my-1" />
+
       <NavMenu
         title="Setting"
         link="/admin/settings"
@@ -212,7 +213,7 @@ function NavMenu({
   title: string
   link: string
   icon: React.ReactNode
-  pathname: string
+  pathname: string | boolean
   className?: string
   additional?: React.ReactNode
 }) {
@@ -222,7 +223,8 @@ function NavMenu({
       className={cn(
         "flex gap-2 px-3 py-2 overflow-hidden items-center rounded-lg text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60",
         className,
-        pathname.startsWith(link) && "text-foreground bg-accent"
+        (typeof pathname === "string" ? pathname.startsWith(link) : pathname) &&
+          "text-foreground bg-accent"
       )}
     >
       <span className="shrink-0 size-10 inline-flex items-center justify-center">
