@@ -33,40 +33,62 @@ export async function POST(request: NextRequest) {
 
     if (transactionStatus == "capture") {
       if (fraudStatus == "accept") {
-        await db.product.update({
-          where: {
-            id: transaction.productId,
-          },
-          data: {
-            stock: transaction.product.stock - transaction.quantity,
-          },
-        })
         await db.transaction.update({
           where: {
             id: data.order_id,
+            payment_status: payment_status.PENDING_PAYMENT,
           },
           data: {
             payment_status: payment_status.PAID,
             payment_method: data.payment_type,
+            product: {
+              update: {
+                stock: {
+                  decrement: transaction.quantity,
+                },
+                user: {
+                  update: {
+                    notification: {
+                      create: {
+                        title: "Pembayaran Diterima",
+                        message: `Pembayaran untuk pesanan #${transaction.id.toString()} telah kami terima. Silahkan proses dan kirim pesanan.`,
+                        url: "/dashboard/orders",
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         })
       }
     } else if (transactionStatus == "settlement") {
-      await db.product.update({
-        where: {
-          id: transaction.productId,
-        },
-        data: {
-          stock: transaction.product.stock - transaction.quantity,
-        },
-      })
       await db.transaction.update({
         where: {
           id: data.order_id,
+          payment_status: payment_status.PENDING_PAYMENT,
         },
         data: {
           payment_status: payment_status.PAID,
           payment_method: data.payment_type,
+          product: {
+            update: {
+              stock: {
+                decrement: transaction.quantity,
+              },
+              user: {
+                update: {
+                  notification: {
+                    create: {
+                      title: "Pembayaran Diterima",
+                      message: `Pembayaran untuk pesanan #${transaction.id.toString()} telah kami terima. Silahkan proses dan kirim pesanan.`,
+                      url: "/dashboard/orders",
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       })
     } else if (

@@ -52,6 +52,17 @@ export async function POST(request: NextRequest) {
         balance: {
           increment: Number(transaction.price),
         },
+        notification: {
+          create: {
+            title: "Transaksi Selesai",
+            message: `Transaksi #${String(
+              id
+            ).toUpperCase()} telah selesai. Saldo Anda bertambah Rp ${
+              transaction.price
+            }.`,
+            url: "/dashboard/transactions",
+          },
+        },
       },
     }),
   ])

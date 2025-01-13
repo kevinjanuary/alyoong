@@ -1,13 +1,27 @@
+import { db } from "@/lib/prismadb"
 import { getCurrentUser } from "@/lib/session"
-import Logo from "./logo"
-import Navigation from "./navigation"
-import SearchField from "./search-field"
-import UserMenu from "./user-menu"
 import { UserRoles } from "@/lib/types"
 import Link from "next/link"
+import Logo from "./logo"
+import Navigation from "./navigation"
+import { Notifications } from "./notifications"
+import SearchField from "./search-field"
+import UserMenu from "./user-menu"
 
 const Navbar = async () => {
   const currentUser = await getCurrentUser()
+
+  const notifications = currentUser
+    ? await db.notification.findMany({
+        where: {
+          userId: currentUser.id,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 10,
+      })
+    : undefined
 
   return (
     <>
@@ -26,6 +40,9 @@ const Navbar = async () => {
           </div>
           <div className="flex gap-2">
             <SearchField />
+
+            {currentUser && <Notifications notifications={notifications} />}
+
             <UserMenu user={currentUser} />
           </div>
         </div>

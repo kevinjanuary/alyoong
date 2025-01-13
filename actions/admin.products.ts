@@ -32,6 +32,18 @@ export const approveProductAction = async (data: unknown) => {
     },
     data: {
       approval_status: ProductApprovalStatus.APPROVED,
+      user: {
+        update: {
+          notification: {
+            create: {
+              title: "Produk Disetujui",
+              message:
+                "Produk Anda telah disetujui dan sudah dapat dilihat oleh pengguna lain.",
+              url: `/products/${result.data.productId}`,
+            },
+          },
+        },
+      },
     },
   })
 
@@ -69,6 +81,17 @@ export const rejectProductAction = async (data: unknown) => {
     data: {
       approval_status: ProductApprovalStatus.REJECTED,
       rejection_reason: result.data.reason,
+      user: {
+        update: {
+          notification: {
+            create: {
+              title: "Persetujuan Produk Ditolak",
+              message: `Produk Anda telah ditolak karena: ${result.data.reason}`,
+              url: "/dashboard/products",
+            },
+          },
+        },
+      },
     },
   })
 
