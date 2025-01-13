@@ -47,7 +47,7 @@ export const Notifications = ({
             <Link href={notification.url} key={notification.id}>
               <div
                 className={cn(
-                  "py-2 px-4 border-b hover:bg-gray-200 transition-colors",
+                  "py-2 px-4 border-b border-gray-300 hover:bg-gray-200 transition-colors",
                   !notification.read && "bg-gray-200/70"
                 )}
                 onClick={() => handleClick(notification.id)}

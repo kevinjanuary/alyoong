@@ -1,9 +1,20 @@
-const AdminPage = () => {
+import { FirstChart } from "./_components/charts"
+import { FourthChart } from "./_components/fourth-charts"
+import { SecondChart } from "./_components/second-charts"
+import { ThirdChart } from "./_components/third-charts"
+
+const AdminDashboard = async () => {
   return (
-    <div>
-      <h1>Admin Page</h1>
+    <div className="space-y-4">
+      <FirstChart />
+
+      <div className="grid-cols-3 grid gap-4">
+        <SecondChart />
+        <ThirdChart />
+        <FourthChart />
+      </div>
     </div>
   )
 }
 
-export default AdminPage
+export default AdminDashboard
