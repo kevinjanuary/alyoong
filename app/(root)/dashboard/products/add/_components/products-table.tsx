@@ -12,41 +12,46 @@ import ProductsTableBody from "./table-body"
 
 export async function ProductsTable({ currentUser }: { currentUser: User }) {
   const products = await db.product.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+      {
+        stock: "desc",
+      },
+    ],
     where: {
       userId: currentUser.id,
     },
   })
 
+  if (!products.length) {
+    return (
+      <NoData
+        title="Yahh! Kamu belum punya produk nih!"
+        description="Kamu harus punya produk untuk bisa jualan di Alyoong. Yukk tambahin satu produk dulu!"
+      />
+    )
+  }
+
   return (
-    <>
-      {products.length > 0 ? (
-        <div className="border rounded-md">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="">Product</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Stock</TableHead>
-                <TableHead className="w-44">Condition</TableHead>
-                <TableHead></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {products.map((product, index) => (
-                <ProductsTableBody key={index} product={product} />
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : (
-        <NoData
-          title="Yahh! Kamu belum punya produk nih!"
-          description="Kamu harus punya produk untuk bisa jualan di Alyoong. Yukk tambahin satu produk dulu!"
-        />
-      )}
-    </>
+    <div className="border rounded-md">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="">Product</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Stock</TableHead>
+            <TableHead className="w-44">Condition</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {products.map((product, index) => (
+            <ProductsTableBody key={index} product={product} />
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

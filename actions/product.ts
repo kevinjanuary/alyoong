@@ -3,8 +3,9 @@
 import { cleanFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
 import { getCurrentUser } from "@/lib/session"
-import { productSchema } from "@/lib/types"
+import { ProductApprovalStatus, productSchema } from "@/lib/types"
 import { revalidatePath } from "next/cache"
+import { z } from "zod"
 
 export const deleteProduct = async (data: unknown) => {
   const user = await getCurrentUser()
@@ -85,5 +86,45 @@ export const editProduct = async (id: unknown, data: unknown) => {
 
   return {
     success: true,
+  }
+}
+
+export const requestApprovalAction = async (data: unknown) => {
+  const result = z
+    .object({
+      productId: z.string(),
+    })
+    .safeParse(data)
+
+  if (!result.success) {
+    return {
+      success: false,
+      message: "Invalid data",
+    }
+  }
+
+  const user = await getCurrentUser()
+  if (!user) {
+    return {
+      success: false,
+      message: "Unauthorized",
+    }
+  }
+
+  await db.product.update({
+    where: {
+      id: result.data.productId,
+      userId: user.id,
+    },
+    data: {
+      approval_status: ProductApprovalStatus.PENDING,
+    },
+  })
+
+  revalidatePath("/dashboard/products")
+
+  return {
+    success: true,
+    message: "Product approval requested",
   }
 }

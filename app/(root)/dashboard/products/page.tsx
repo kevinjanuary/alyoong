@@ -21,31 +21,31 @@ const ProductsPage = async () => {
     },
   })
 
-  return (
-    <div>
-      {address ? (
-        <>
-          <div className="mb-4 flex justify-end">
-            <Button size="sm" asChild>
-              <Link href="/dashboard/products/add">Add product</Link>
-            </Button>
-          </div>
-          <ProductsTable currentUser={currentUser} />
-        </>
-      ) : (
-        <NoData
-          title="Yahh! Kamu harus punya alamat utama!"
-          description="Kamu harus punya alamat utama untuk bisa jualan di Alyoong. Yukk
+  if (!address) {
+    return (
+      <NoData
+        title="Yahh! Kamu harus punya alamat utama!"
+        description="Kamu harus punya alamat utama untuk bisa jualan di Alyoong. Yukk
         tambahin satu alamat utama dulu!"
-        >
-          <AddressModal
-            button="Tambah alamat"
-            title="Tambah alamat utama"
-            description="Tambahkan alamat utama kamu untuk bisa jualan di Alyoong!"
-          />
-        </NoData>
-      )}
-    </div>
+      >
+        <AddressModal
+          button="Tambah alamat"
+          title="Tambah alamat utama"
+          description="Tambahkan alamat utama kamu untuk bisa jualan di Alyoong!"
+        />
+      </NoData>
+    )
+  }
+
+  return (
+    <>
+      <div className="mb-4 flex justify-end">
+        <Button size="sm" asChild>
+          <Link href="/dashboard/products/add">Add product</Link>
+        </Button>
+      </div>
+      <ProductsTable currentUser={currentUser} />
+    </>
   )
 }
 
