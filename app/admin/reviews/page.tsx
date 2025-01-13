@@ -59,7 +59,7 @@ const AdminReviewsPage = async () => {
                         alt={review.product.name}
                         width={56}
                         height={56}
-                        className="object-cover"
+                        className="object-cover h-full w-full"
                       />
                     </div>
                     <Link href={`/product/${review.product.id}`}>

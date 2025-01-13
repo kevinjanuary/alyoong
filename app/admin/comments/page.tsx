@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/table"
 import { currencyFormat } from "@/lib/currencyFormat"
 import { db } from "@/lib/prismadb"
+import { imageLoader } from "@/lib/utils-client"
 import { format, formatDistanceToNow } from "date-fns"
 import { id } from "date-fns/locale"
+import Image from "next/image"
 import Link from "next/link"
 
 const AdminCommentsPage = async () => {
@@ -33,8 +35,8 @@ const AdminCommentsPage = async () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>User</TableHead>
               <TableHead>Product</TableHead>
+              <TableHead>User</TableHead>
               <TableHead>Replies for</TableHead>
               <TableHead>Comment</TableHead>
               <TableHead>Created at</TableHead>
@@ -43,6 +45,23 @@ const AdminCommentsPage = async () => {
           <TableBody>
             {comments.map((comment) => (
               <TableRow key={comment.id}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <div className="w-14 h-14 relative overflow-hidden rounded-md">
+                      <Image
+                        loader={imageLoader}
+                        src={comment.product.images}
+                        alt={comment.product.name}
+                        width={56}
+                        height={56}
+                        className="object-cover h-full w-full"
+                      />
+                    </div>
+                    <Link href={`/products/${comment.product.id}`}>
+                      {comment.product.name}
+                    </Link>
+                  </div>
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Avatar>
@@ -58,11 +77,6 @@ const AdminCommentsPage = async () => {
                     </Avatar>
                     <span>{comment.user.name}</span>
                   </div>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/products/${comment.product.id}`}>
-                    {comment.product.name}
-                  </Link>
                 </TableCell>
                 <TableCell>
                   {comment.parent ? comment.parent.comment : "None"}
