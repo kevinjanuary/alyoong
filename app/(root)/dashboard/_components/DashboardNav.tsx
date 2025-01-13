@@ -55,18 +55,18 @@ export function DashboardNav() {
   const segment = useSelectedLayoutSegment()
 
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-1 text-sm">
       {NavbarUser.map((item) => (
         <Link href={item.href} key={item.name}>
           <span
             className={cn(
-              "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+              "group flex w-full items-center rounded-md border border-transparent p-2 hover:bg-muted hover:text-foreground",
               item.href.includes(String(segment))
                 ? "bg-muted text-foreground"
                 : "text-muted-foreground"
             )}
           >
-            <item.icon size={20} className="mr-2" />
+            <item.icon size={18} className="mr-2" />
             {item.name}
           </span>
         </Link>
@@ -76,13 +76,13 @@ export function DashboardNav() {
         <Link href={item.href} key={item.name}>
           <span
             className={cn(
-              "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+              "group flex w-full items-center rounded-md border border-transparent p-2 hover:bg-muted hover:text-foreground",
               item.href.includes(String(segment))
                 ? "bg-muted text-foreground"
                 : "text-muted-foreground"
             )}
           >
-            <item.icon size={20} className="mr-2" />
+            <item.icon size={18} className="mr-2" />
             {item.name}
           </span>
         </Link>
@@ -92,13 +92,13 @@ export function DashboardNav() {
         <Link href={item.href} key={item.name}>
           <span
             className={cn(
-              "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+              "group flex w-full items-center rounded-md border border-transparent p-2 hover:bg-muted hover:text-foreground",
               item.href.includes(String(segment))
                 ? "bg-muted text-foreground"
                 : "text-muted-foreground"
             )}
           >
-            <item.icon size={20} className="mr-2" />
+            <item.icon size={18} className="mr-2" />
             {item.name}
           </span>
         </Link>
