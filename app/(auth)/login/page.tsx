@@ -10,6 +10,7 @@ import Link from "next/link"
 
 import { OAuthSignIn } from "../_components/oauth-signin"
 import { SignInForm } from "../_components/signin-form"
+import { Suspense } from "react"
 
 const LoginPage = async () => {
   return (
@@ -20,7 +21,9 @@ const LoginPage = async () => {
           <CardDescription>Choose your preferred login method</CardDescription>
         </CardHeader>
         <CardContent>
-          <OAuthSignIn />
+          <Suspense>
+            <OAuthSignIn />
+          </Suspense>
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -31,7 +34,9 @@ const LoginPage = async () => {
               </span>
             </div>
           </div>
-          <SignInForm />
+          <Suspense>
+            <SignInForm />
+          </Suspense>
         </CardContent>
         <CardFooter>
           <div className="text-sm text-muted-foreground">

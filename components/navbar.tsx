@@ -7,6 +7,7 @@ import Navigation from "./navigation"
 import { Notifications } from "./notifications"
 import SearchField from "./search-field"
 import UserMenu from "./user-menu"
+import { Suspense } from "react"
 
 const Navbar = async () => {
   const currentUser = await getCurrentUser()
@@ -39,7 +40,9 @@ const Navbar = async () => {
             <Navigation />
           </div>
           <div className="flex gap-2">
-            <SearchField />
+            <Suspense>
+              <SearchField />
+            </Suspense>
 
             {currentUser && <Notifications notifications={notifications} />}
 

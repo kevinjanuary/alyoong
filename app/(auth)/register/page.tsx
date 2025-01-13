@@ -12,6 +12,7 @@ import Link from "next/link"
 
 import { OAuthSignIn } from "../_components/oauth-signin"
 import { SignUpForm } from "../_components/signup-form"
+import { Suspense } from "react"
 
 const RegisterPage = async () => {
   const users = await db.user.findMany()
@@ -26,7 +27,9 @@ const RegisterPage = async () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <OAuthSignIn />
+          <Suspense>
+            <OAuthSignIn />
+          </Suspense>
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -37,7 +40,9 @@ const RegisterPage = async () => {
               </span>
             </div>
           </div>
-          <SignUpForm />
+          <Suspense>
+            <SignUpForm />
+          </Suspense>
         </CardContent>
         <CardFooter>
           <div className="flex gap-1 text-sm text-muted-foreground">

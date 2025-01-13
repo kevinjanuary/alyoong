@@ -8,9 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 const SearchField = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [query, setQuery] = useState(
-    searchParams.get("query")?.toString() || ""
-  )
+  const [query, setQuery] = useState(searchParams.get("query") ?? "")
 
   return (
     <div className="relative">
