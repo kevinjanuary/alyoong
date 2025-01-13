@@ -16,6 +16,7 @@ import {
   HomeIcon,
   LogOutIcon,
   PackageIcon,
+  PackageSearchIcon,
   ReceiptIcon,
   SettingsIcon,
   UserRoundIcon,
@@ -68,9 +69,9 @@ export function Navbar() {
       <Separator className="my-1" />
 
       <NavMenu
-        title="Transaction"
-        link="/admin/transactions"
-        icon={<ReceiptIcon size={18} />}
+        title="New Product"
+        link="/admin/products/new"
+        icon={<PackageSearchIcon size={18} />}
         pathname={pathname}
       />
 
@@ -80,13 +81,20 @@ export function Navbar() {
         title="Product"
         link="/admin/products"
         icon={<PackageIcon size={18} />}
-        pathname={pathname}
+        pathname={pathname === "/admin/products"}
       />
 
       <NavMenu
         title="User"
         link="/admin/users"
         icon={<UsersRoundIcon size={18} />}
+        pathname={pathname}
+      />
+
+      <NavMenu
+        title="Transaction"
+        link="/admin/transactions"
+        icon={<ReceiptIcon size={18} />}
         pathname={pathname}
       />
 

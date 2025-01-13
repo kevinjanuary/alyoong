@@ -5,6 +5,12 @@ export const UserRoles = {
   USER: "USER",
 }
 
+export const ProductApprovalStatus = {
+  PENDING: "PENDING",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+}
+
 export const registerSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email({
