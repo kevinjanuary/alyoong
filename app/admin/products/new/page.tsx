@@ -27,7 +27,7 @@ const AdminTransactionPage = async () => {
       user: true,
     },
     orderBy: {
-      createdAt: "desc",
+      updatedAt: "asc",
     },
   })
 
