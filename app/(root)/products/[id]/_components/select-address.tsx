@@ -46,7 +46,7 @@ export function SelectAddress({
   const [selected, setSelected] = useState<Address | null>(null)
 
   const [defaultCourier, setDefaultCourier] = useState<string>("")
-  const [cost, setCost] = useState<CostsType[]>()
+  const [couriers, setCouriers] = useState<CostResultType>()
 
   const isFirstRender = useRef(true)
 
@@ -79,18 +79,16 @@ export function SelectAddress({
         }),
       }).then(async (response) => {
         const res: CostResultType = await response.json()
-        setDefaultCourier(res.rajaongkir.results[0].code.toUpperCase())
-        setCost(res.rajaongkir.results[0].costs)
+        setDefaultCourier(res[0]?.code.toUpperCase())
+        setCouriers(res)
         setAddress(
           `${selected.name} (${selected.phone})\n${selected.address} ${
             selected.notes && `(${selected.notes}),`
           }\n${selected.city_district} ${selected.postal_code}`
         )
         courier({
-          name: `${res.rajaongkir.results[0].code.toUpperCase()} ${
-            res.rajaongkir.results[0].costs[0].service
-          }`,
-          cost: res.rajaongkir.results[0].costs[0].cost[0].value,
+          name: `${res[0]?.code.toUpperCase()} ${res[0]?.service}`,
+          cost: res[0]?.cost,
         })
       })
     }
@@ -212,14 +210,14 @@ export function SelectAddress({
           <>
             <Separator />
             <div className="py-3 px-4 text-sm">Pilih metode pengiriman</div>
-            {cost && (
+            {couriers && (
               <div className="px-4 pb-4">
                 <Select
-                  defaultValue={cost[0].cost[0].value.toString()}
+                  defaultValue={couriers[0]?.cost.toString()}
                   onValueChange={(e) => {
                     const value = parseInt(e)
-                    const selectedCost = cost.find(
-                      (item) => item.cost[0].value === value
+                    const selectedCost = couriers.find(
+                      (item) => item.cost === value
                     )
                     selectedCost &&
                       courier({
@@ -232,14 +230,14 @@ export function SelectAddress({
                     <SelectValue placeholder="Metode pengiriman" />
                   </SelectTrigger>
                   <SelectContent>
-                    {cost.map((item) => (
+                    {couriers.map((item) => (
                       <SelectItem
                         key={item.service}
-                        value={item.cost[0].value.toString()}
+                        value={item.cost.toString()}
                       >
                         {`${defaultCourier} ${item.service} (${
-                          item.cost[0].etd
-                        } hari) - Rp ${currencyFormat(item.cost[0].value)}`}
+                          item.etd
+                        }) - Rp ${currencyFormat(item.cost)}`}
                       </SelectItem>
                     ))}
                   </SelectContent>

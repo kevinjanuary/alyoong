@@ -295,23 +295,10 @@ export type CostType = {
 }
 
 export type CostResultType = {
-  rajaongkir: {
-    query: {
-      origin: string
-      destination: string
-      weight: number
-      courier: string
-    }
-    status: {
-      code: number
-      description: string
-    }
-    origin_details: CityType
-    destination_details: CityType
-    results: {
-      code: string
-      name: string
-      costs: CostsType[]
-    }[]
-  }
-}
+  name: string
+  code: string
+  service: string
+  description: string
+  cost: number
+  etd: string
+}[]
